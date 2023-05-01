@@ -12,7 +12,7 @@ database = Database(os.getenv("MYSQL_HOST"), os.getenv("MYSQL_USER"),
 
 try:
     database.connect()
-    query = """ SELECT * FROM books limit 20"""
+    query = """ SELECT * FROM books LIMIT 20"""
     database.cursor.execute(query)
 
     for row in database.cursor:
@@ -21,5 +21,3 @@ try:
     database.disconnect()
 except mysql.connector.Error as err:
     print(f'Error: {err}')
-
-
