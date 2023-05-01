@@ -1,5 +1,5 @@
 # The_Library
-> This is library management system
+> A library management system in Mysql Database and Python.
 
 ## Description
 An application with a graphical interface that automates the entire process of managing the library, making it efficient and convenient for the library staff and users. The system provides an easy way to manage books, borrowers, and library staff.
@@ -10,6 +10,9 @@ An application with a graphical interface that automates the entire process of m
 * Library staff management: add, edit, and delete staff, view staff details, and manage staff permissions.
 * Borrowing management: manage book borrowing, return, and renewal, and view borrowing history.
 * Reservation management: manage book reservations, view reservation details, and notify borrowers of book availability.
+
+### Database model
+![](docs/database_diagram.png)
 
 ## Getting Started
 To get started, follow these instructions:

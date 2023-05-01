@@ -43,13 +43,13 @@ class App(ctk.CTk):
 
     def _create_gui(self):
         # create login menu
-        self.login_frame = ctk.CTkFrame(self, corner_radius=10, fg_color='#707070')
-        self.login_frame.grid(row=0, column=0, rowspan=2, columnspan=2)
+        self.login_frame = ctk.CTkFrame(self, corner_radius=10, fg_color='#D9D9D9')
         self.login_frame.grid_rowconfigure(1, weight=1)
         self.login_frame.grid_columnconfigure(1, weight=1)
 
-        self.login_label = ctk.CTkLabel(self.login_frame, text='Log into your Account', text_color='gray15',
-                                        font=ctk.CTkFont(size=35, weight='bold'))
+        self.login_label = ctk.CTkLabel(self.login_frame, text='  Login your Account', text_color='gray25',
+                                        font=ctk.CTkFont(size=35, weight='bold'), image=self.logo_image,
+                                        compound='left')
         self.login_label.grid(row=0, column=1, padx=20, pady=25, columnspan=2)
 
         self.username_entry = ctk.CTkEntry(self.login_frame, width=300, placeholder_text='Username',
@@ -61,23 +61,22 @@ class App(ctk.CTk):
                                            font=ctk.CTkFont(size=15))
         self.password_entry.grid(row=2, column=1, padx=20, pady=15)
 
-        self.toggle_password = ctk.CTkCheckBox(self.login_frame, text='Show', text_color='gray85',
-                                               font=ctk.CTkFont(size=15), variable=self.show_password,
-                                               command=self.toggle_password_visibility)
-        self.toggle_password.grid(row=2, column=2)
+        self.toggle_password_button = ctk.CTkCheckBox(self.login_frame, text='Show', text_color='gray30',
+                                                      font=ctk.CTkFont(size=15), variable=self.show_password,
+                                                      command=self.toggle_password_visibility)
+        self.toggle_password_button.grid(row=2, column=2)
 
-        self.forgot_password = ctk.CTkLabel(self.login_frame, text='Forgot password?', text_color='gray85',
+        self.forgot_password = ctk.CTkLabel(self.login_frame, text='Forgot password?', text_color='#0074cc',
                                             font=ctk.CTkFont(size=15, underline=True), anchor='w', cursor='hand2')
         self.forgot_password.grid(row=3, column=1, padx=20, pady=10, columnspan=2, sticky='w')
 
-        self.login_button = ctk.CTkButton(self.login_frame, height=40, border_spacing=10, text='Login',
+        self.login_button = ctk.CTkButton(self.login_frame, height=40, width=200, border_spacing=10, text='Login',
                                           text_color='#ffffff', font=ctk.CTkFont(size=20, weight='bold'),
                                           anchor='n', command=self.login_button_event)
         self.login_button.grid(row=4, column=1, columnspan=2, pady=20)
 
         # create navigation sidebar
         self.navigation_sidebar = ctk.CTkFrame(self, corner_radius=0)
-        self.navigation_sidebar.grid(row=0, column=0, sticky='nsew')
         self.navigation_sidebar.grid_rowconfigure(6, weight=1)  # NOTE: change it when adding more buttons
 
         self.navigation_sidebar_label = ctk.CTkLabel(self.navigation_sidebar, text='  Library Manager',
@@ -126,7 +125,7 @@ class App(ctk.CTk):
         self.reservation_button.grid(row=5, column=0, sticky='ew')
 
         self.logout_button = ctk.CTkButton(self.navigation_sidebar, corner_radius=0, height=40, border_spacing=10,
-                                           text='Logout',
+                                           text='Logout', font=ctk.CTkFont(size=15, weight='bold'),
                                            image=self.logout_image, anchor='w',
                                            command=lambda: self.select_frame_by_name(Frame.Login))
         self.logout_button.grid(row=6, column=0, sticky='wes', pady=(0, 20))
@@ -135,36 +134,39 @@ class App(ctk.CTk):
         self.overview_frame = ctk.CTkFrame(self, corner_radius=0, fg_color='transparent')
         self.overview_frame.grid_columnconfigure(0, weight=1)
 
-        self.overview_label = ctk.CTkLabel(self.overview_frame, text='Library overview', font=ctk.CTkFont(size=20))
-        self.overview_label.grid(row=0, column=0, padx=20, pady=10)
+        self.overview_label = ctk.CTkLabel(self.overview_frame, text='Library overview',
+                                           font=ctk.CTkFont(size=25, weight='bold'))
+        self.overview_label.grid(row=0, column=0, padx=20, pady=20)
 
         # create second frame
         self.books_frame = ctk.CTkFrame(self, corner_radius=0, fg_color='transparent')
         self.books_frame.grid_columnconfigure(0, weight=1)
 
-        self.books_label = ctk.CTkLabel(self.books_frame, text='Manage books', font=ctk.CTkFont(size=20))
-        self.books_label.grid(row=0, column=0, padx=20, pady=10)
+        self.books_label = ctk.CTkLabel(self.books_frame, text='Manage books', font=ctk.CTkFont(size=25, weight='bold'))
+        self.books_label.grid(row=0, column=0, padx=20, pady=20)
 
         # create third frame
         self.clients_frame = ctk.CTkFrame(self, corner_radius=0, fg_color='transparent')
         self.clients_frame.grid_columnconfigure(0, weight=1)
 
-        self.clients_label = ctk.CTkLabel(self.clients_frame, text='Manage clients', font=ctk.CTkFont(size=20))
-        self.clients_label.grid(row=0, column=0, padx=20, pady=10)
+        self.clients_label = ctk.CTkLabel(self.clients_frame, text='Manage clients',
+                                          font=ctk.CTkFont(size=25, weight='bold'))
+        self.clients_label.grid(row=0, column=0, padx=20, pady=20)
 
         # create fourth frame
         self.lent_frame = ctk.CTkFrame(self, corner_radius=0, fg_color='transparent')
         self.lent_frame.grid_columnconfigure(0, weight=1)
 
-        self.lent_label = ctk.CTkLabel(self.lent_frame, text='Lent books', font=ctk.CTkFont(size=20))
-        self.lent_label.grid(row=0, column=0, padx=20, pady=10)
+        self.lent_label = ctk.CTkLabel(self.lent_frame, text='Lent books', font=ctk.CTkFont(size=25, weight='bold'))
+        self.lent_label.grid(row=0, column=0, padx=20, pady=20)
 
         # create fifth frame
         self.reservation_frame = ctk.CTkFrame(self, corner_radius=0, fg_color='transparent')
         self.reservation_frame.grid_columnconfigure(0, weight=1)
 
-        self.reservation_label = ctk.CTkLabel(self.reservation_frame, text='Reserve books', font=ctk.CTkFont(size=20))
-        self.reservation_label.grid(row=0, column=0, padx=20, pady=10)
+        self.reservation_label = ctk.CTkLabel(self.reservation_frame, text='Reserve books',
+                                              font=ctk.CTkFont(size=25, weight='bold'))
+        self.reservation_label.grid(row=0, column=0, padx=20, pady=20)
 
         # select default frame
         self.select_frame_by_name(Frame.Login)
@@ -173,26 +175,31 @@ class App(ctk.CTk):
     def login_button_event(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
-        self.password_entry.delete(0, ctk.END)
 
         # perform login validation
         if username == 'admin' and password == '1234':
+            # clear login form
+            self.password_entry.delete(0, ctk.END)
             self.username_entry.delete(0, ctk.END)
             self.focus()
+            self.show_password.set(False)
+            self.toggle_password_visibility()
+            # show app
             self.select_frame_by_name(Frame.Overview)
         elif username == '' or password == '':
             CTkMessagebox(title='Required fields', message='Please include all fields')
         else:
             CTkMessagebox(title='Unable to login', message='Invalid username or password')
+            self.password_entry.delete(0, ctk.END)
         # TODO: This should be replaced with proper database validation in the future.
         # TODO: Secure from SQL injection
 
     def toggle_password_visibility(self):
         if self.show_password.get():
-            self.toggle_password.configure(text='Hide')
+            self.toggle_password_button.configure(text='Hide')
             self.password_entry.configure(show='')
         else:
-            self.toggle_password.configure(text='Show')
+            self.toggle_password_button.configure(text='Show')
             self.password_entry.configure(show='•')
 
     def select_frame_by_name(self, name):
