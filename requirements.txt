@@ -1,0 +1,8 @@
+CTkMessagebox==1.80
+customtkinter==5.1.2
+Pillow==9.5.0
+python-dotenv==1.0.0
+
+mysql~=0.0.3
+mysql-connector-python~=8.0.33
+bcrypt~=4.0.1
