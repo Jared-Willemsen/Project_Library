@@ -5,7 +5,6 @@ class Database:
     """
     A class that represents a connection to a MySQL database.
     """
-
     def __init__(self, host, user, password, database):
         self.host = host
         self.user = user
