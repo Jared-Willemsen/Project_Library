@@ -4,7 +4,7 @@ import mysql.connector
 
 
 class CustomTable(ctk.CTkFrame):
-    def __init__(self, parent, headings: list[str], column_widths: list[int], height=20):
+    def __init__(self, parent, headings: list[str], column_widths: list[int], height: int = 20):
         super().__init__(parent)
 
         self.treeview = ttk.Treeview(self, columns=headings, height=height)
@@ -17,7 +17,7 @@ class CustomTable(ctk.CTkFrame):
         for i, heading in enumerate(headings):
             width = column_widths[i] if column_widths else None
             self.treeview.heading(heading, text=heading.title(), anchor="center")
-            self.treeview.column(heading, width=width, anchor="center")
+            self.treeview.column(heading, minwidth=width, width=width, anchor="center")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
