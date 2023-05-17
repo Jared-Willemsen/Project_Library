@@ -6,3 +6,5 @@ python-dotenv==1.0.0
 mysql~=0.0.3
 mysql-connector-python~=8.0.33
 bcrypt~=4.0.1
+
+matplotlib~=3.7.1
