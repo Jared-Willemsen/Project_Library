@@ -31,9 +31,11 @@ Dear {client_full_name},
 
 We would like to inform you that the book titled "{book_title}" that you borrowed from our library is currently overdue.
 
-We kindly ask that you return the book as soon as possible to avoid any additional fees. Please note that you will be charged a late fee of {late_fee} for each day that the book is not returned.
+We kindly ask that you return the book as soon as possible to avoid any additional fees. Please note that you will be \
+charged a late fee of {late_fee} for each day that the book is not returned.
 
-If you have already returned the book, please disregard this notice. If you have any questions or concerns, please feel free to contact us at {contact_email}.
+If you have already returned the book, please disregard this notice. If you have any questions or concerns, please \
+feel free to contact us at {contact_email}.
 
 Thank you for your cooperation.
 
@@ -42,9 +44,9 @@ Best regards,
 
 {library_manager}
 {library_name}
-"""  # nopep8
+"""
 
 
 # Send email
 load_dotenv()
-send_email('andrey.m.suhov@gmail.com', f'Reminder: Overdue Book from {library_name}', email_body)
+send_email('704342@student.inholland.nl', f'Reminder: Overdue Book from {library_name}', email_body)
