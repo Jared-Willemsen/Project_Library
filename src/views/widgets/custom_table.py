@@ -36,18 +36,13 @@ class CustomTable(ctk.CTkFrame):
     def selection(self):
         return self.treeview.selection()
 
-    def insert_from_mysql(self, db_config, table):
-        db = mysql.connector.connect(**db_config)
-        cursor = db.cursor()
-
-        cursor.execute(f"SELECT * FROM {table}")
-        rows = cursor.fetchall()
-
+    def insert_rows(self, rows):
         for row in rows:
             self.insert("", "end", values=row)
-
-        cursor.close()
-        db.close()
+    
+    def clear_rows(self):
+        for row in self.treeview.get_children():
+            self.treeview.delete(row)
 
     @staticmethod
     def set_ttk_styles():

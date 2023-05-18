@@ -2,10 +2,6 @@ import customtkinter as ctk
 
 
 class Root(ctk.CTk):
-    """
-    The main window for the GUI.
-    """
-
     def __init__(self):
         super().__init__()
 
@@ -15,7 +11,7 @@ class Root(ctk.CTk):
         self.bind('<Map>', lambda event: self.update())  # BUGFIX - Minimize window redraw glitch
 
         # load icon
-        # self.iconbitmap(True, os.path.join(IMAGES_DIR, 'icon.ico'))  # BUG - Customtkinter overrides Toplevel icon
+        self.iconbitmap(True, 'src/images/icon.ico')
 
         # configure customtkinter
         ctk.set_appearance_mode('light')
