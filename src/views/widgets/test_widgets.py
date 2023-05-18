@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from src.views.widgets.custom_table import CustomTable
-from src.views.widgets.searchbar import SearchBar
+from src.widgets.custom_table import CustomTable
+from src.widgets.searchbar import SearchBar
 
 root = ctk.CTk()
 ctk.set_appearance_mode('dark')

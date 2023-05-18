@@ -10,3 +10,6 @@ class SearchBar(CTkFrame):
 
         self.entry.place(relx=0, anchor='nw')
         self.button.place(relx=1, anchor='ne')
+    
+    def get_search_input(self):
+        return self.entry.get()
