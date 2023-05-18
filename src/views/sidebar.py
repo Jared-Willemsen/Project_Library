@@ -2,7 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 import os
 
-from src.config import IMAGES_DIR
+from ..resources.config import IMAGES_DIR
 
 
 class SidebarView(ctk.CTkFrame):

@@ -7,5 +7,5 @@ class LentView(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
 
         self.header = ctk.CTkLabel(self, text='Lent books',
-                                           font=ctk.CTkFont(size=25, weight='bold'))
+                                   font=ctk.CTkFont(size=25, weight='bold'))
         self.header.grid(row=0, column=0, padx=20, pady=20)

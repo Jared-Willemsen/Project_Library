@@ -3,7 +3,7 @@ from PIL import Image
 import os
 from CTkMessagebox import CTkMessagebox
 
-from src.config import IMAGES_DIR
+from ..resources.config import IMAGES_DIR
 
 
 class LoginView(ctk.CTkFrame):
@@ -16,15 +16,15 @@ class LoginView(ctk.CTkFrame):
 
         # populate frame
         self.header = ctk.CTkLabel(self, text='  Login your Account', text_color='gray25',
-                                        font=ctk.CTkFont(size=35, weight='bold'), image=self.logo_image,
-                                        compound='left')
+                                   font=ctk.CTkFont(size=35, weight='bold'), image=self.logo_image,
+                                   compound='left')
         self.header.grid(row=0, column=1, padx=20, pady=25, columnspan=2)
 
         self.email_label = ctk.CTkLabel(self, text='Email', text_color='gray25', font=ctk.CTkFont(size=15),
-                                           anchor='sw')
+                                        anchor='sw')
         self.email_label.grid(row=1, column=1, sticky='nw', padx=25)
         self.email_entry = ctk.CTkEntry(self, width=300, font=ctk.CTkFont(size=15),
-                                           placeholder_text='name.surname@example.com')
+                                        placeholder_text='name.surname@example.com')
         self.email_entry.grid(row=2, column=1, padx=20, pady=(0, 15))
         # self.username_entry.after(230, self.username_entry.focus_set)  # BUGFIX - Customtkinter fix focus_set
 
