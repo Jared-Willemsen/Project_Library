@@ -42,7 +42,7 @@ class Database:
         """Execute raw SQL query"""
         self.connect()
         self.cursor.execute(query, values)
-        result = self.cursor.fetchone()
+        result = self.cursor.fetchall()
         self.disconnect()
         return result
 
