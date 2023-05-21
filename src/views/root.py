@@ -1,4 +1,7 @@
 import customtkinter as ctk
+import os
+
+from ..resources.config import IMAGES_DIR
 
 
 class Root(ctk.CTk):
@@ -15,7 +18,7 @@ class Root(ctk.CTk):
         self.bind('<Map>', lambda event: self.update())  # BUGFIX - Minimize window redraw glitch
 
         # load icon
-        # self.iconbitmap(True, os.path.join(IMAGES_DIR, 'icon.ico'))  # BUG - Customtkinter overrides Toplevel icon
+        self.iconbitmap(True, os.path.join(IMAGES_DIR, 'icon.ico'))
 
         # configure customtkinter
         ctk.set_appearance_mode('light')

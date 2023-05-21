@@ -18,14 +18,14 @@ class LoginController:
         if self.model.auth.login(email, password):
             self.view.select_frame_by_name('overview')
         elif email == '' and password == '':
-            self.frame.show_messagebox(title='Required fields', message='Please enter email and password', header=True,
-                                       icon='warning')
+            self.frame.show_messagebox(title='Required fields', message='Please enter email and password',
+                                       cancel_button='cross', icon='warning')
         elif email == '':
-            self.frame.show_messagebox(title='Required fields', message='Please enter email', header=True,
+            self.frame.show_messagebox(title='Required fields', message='Please enter email', cancel_button='cross',
                                        icon='warning')
         elif password == '':
-            self.frame.show_messagebox(title='Required fields', message='Please enter password', header=True,
+            self.frame.show_messagebox(title='Required fields', message='Please enter password', cancel_button='cross',
                                        icon='warning')
         else:
-            self.frame.show_messagebox(title='Unable to login', message='Invalid email or password', header=True,
-                                       icon='warning')
+            self.frame.show_messagebox(title='Unable to login', message='Invalid email or password',
+                                       cancel_button='cross', icon='warning')
