@@ -8,9 +8,13 @@ class BooksController:
         self._bind()
 
     def _bind(self):
+        # Add keyboard/button controls for entries
+        self.view.frames['books'].search_bar.entry.bind(
+            '<Return>', lambda e: self.find(self.view.frames['books'].search_bar.get_search_input()))
         self.view.frames['books'].search_bar.button.configure(
             command=lambda: self.find(self.view.frames['books'].search_bar.get_search_input()))
 
     def find(self, search_input):
         self.view.frames['books'].table.clear_rows()
-        self.view.frames['books'].table.insert_rows(self.model.search.search_books('title', search_input))
+        search_column = self.view.frames['books'].search_bar.get_selected_column()
+        self.view.frames['books'].table.insert_rows(self.model.search.search_books(search_column, search_input))
