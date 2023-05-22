@@ -1,52 +1,66 @@
 import os
 import smtplib
+from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
 
-def send_email(to_email_address: str, subject: str, body: str):
-    """
-    send_email sends an email to the email address specified in the
-    argument.
-    """
+def generate_email_body(client_full_name, book_title, late_fee, email_contact, library_manager, library_name):
+    try:
+        with open('resources/templates/overdue_notification.html') as file:
+            email_template = file.read()
+    except IOError:
+        print('The message template file was not found')
+        return
 
-    with smtplib.SMTP('smtp.gmail.com', 587) as server:
-        server.starttls()
-        server.login(os.getenv("GMAIL_EMAIL"), os.getenv("GMAIL_APP_PASSWORD"))
-        server.sendmail(os.getenv("GMAIL_EMAIL"), to_email_address,
-                        "Subject: {}\n\n{}".format(subject, body))
+    # Replace placeholders with dynamic values
+    email_body = email_template\
+        .replace("[Client's Full Name]", client_full_name) \
+        .replace("[Book Title]", book_title) \
+        .replace("[Late Fee]", late_fee) \
+        .replace("[Contact Email]", email_contact) \
+        .replace("[Library Manager]", library_manager) \
+        .replace("[Library Name]", library_name)
 
-
-# Set email parameters
-client_full_name = "Keith Maxwell"
-book_title = "The Catcher in the Rye"
-late_fee = "0.50 euro"
-contact_email = "alexandria.library@gmail.com"
-library_manager = "Samia el Abodi"
-library_name = "Alexandria Library"
-
-# Create email body
-email_body = f"""
-Dear {client_full_name},
+    return email_body
 
 
-We would like to inform you that the book titled "{book_title}" that you borrowed from our library is currently overdue.
+def send_email(receiver: str, email_body: str):
+    sender = os.getenv("GMAIL_EMAIL")
+    password = os.getenv("GMAIL_APP_PASSWORD")
 
-We kindly ask that you return the book as soon as possible to avoid any additional fees. Please note that you will be \
-charged a late fee of {late_fee} for each day that the book is not returned.
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
 
-If you have already returned the book, please disregard this notice. If you have any questions or concerns, please \
-feel free to contact us at {contact_email}.
+    try:
+        server.login(sender, password)
+        msg = MIMEText(email_body, 'html')
+        msg['From'] = sender
+        msg['To'] = receiver
+        msg['Subject'] = 'Overdue Book Reminder '
+        server.sendmail(sender, receiver, msg.as_string())
+        print(f'The message was sent successfully!')
+    except Exception as e:
+        print(f'Error: {e}: Check your login or password, please!')
+    finally:
+        server.quit()
 
-Thank you for your cooperation.
+
+def main():
+    # Example dynamic values
+    client_full_name = "Keith Maxwell"
+    book_title = "The Catcher in the Rye"
+    late_fee = "€2"
+    email_contact = "alexandria.library@gmail.com"
+    library_manager = "Samia el Abodi"
+    library_name = "Alexandria Library"
+    email_body = generate_email_body(client_full_name, book_title, late_fee, email_contact, library_manager,
+                                     library_name)
+    if not email_body:
+        return
+
+    load_dotenv()
+    receiver = '704342@student.inholland.nl'
+    send_email(receiver, email_body)
 
 
-Best regards,
-
-{library_manager}
-{library_name}
-"""
-
-
-# Send email
-load_dotenv()
-send_email('704342@student.inholland.nl', f'Reminder: Overdue Book from {library_name}', email_body)
+main()
