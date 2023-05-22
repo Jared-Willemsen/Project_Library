@@ -2,7 +2,7 @@ import customtkinter as ctk
 from PIL import Image
 import os
 
-from ...resources.config import IMAGES_DIR
+from src.resources.config import IMAGES_DIR
 
 
 class SearchBar(ctk.CTkFrame):

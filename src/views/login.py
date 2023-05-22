@@ -3,7 +3,7 @@ from PIL import Image
 import os
 from CTkMessagebox import CTkMessagebox
 
-from ..resources.config import IMAGES_DIR
+from src.resources.config import IMAGES_DIR
 
 
 class LoginView(ctk.CTkFrame):

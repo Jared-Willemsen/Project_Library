@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import os
 
-from ..resources.config import IMAGES_DIR
+from src.resources.config import IMAGES_DIR
 
 
 class Root(ctk.CTk):
