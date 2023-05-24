@@ -5,3 +5,7 @@ class Search:
     def search_books(self, column, search_input):
         query = f'SELECT title, author, genre, language FROM books WHERE {column} LIKE "%{search_input}%"'
         return self.database.execute_query(query)
+
+    def search_clients(self, column, search_input):
+        query = f'SELECT name, surname, email language FROM clients WHERE {column} LIKE "%{search_input}%"'
+        return self.database.execute_query(query)
