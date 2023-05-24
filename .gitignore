@@ -16,6 +16,9 @@ venv.bak/
 # profiler output
 *.prof
 
+# Logging
+*.log
+
 # Distribution / packaging
 .Python
 build/
