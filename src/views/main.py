@@ -17,6 +17,7 @@ class View:
     def __init__(self):
         self.root = Root()
         self.frames = {}
+        self.current_frame = None
         self._create_frames()
 
     def _create_frames(self):
@@ -47,8 +48,12 @@ class View:
         if name not in self.frames:
             return
 
+        if name == self.current_frame:
+            return
+
         self.hide_frames()
         self.frames[name].grid()
+        self.current_frame = name
 
         # show sidebar
         if name in ('login', 'forgot_password'):
