@@ -1,25 +1,28 @@
 import os
 import smtplib
 from email.mime.text import MIMEText
-from dotenv import load_dotenv
+from email.utils import formataddr
 
 
-def generate_email_body(client_full_name, book_title, late_fee, email_contact, library_manager, library_name):
+def read_html_template():
     try:
         with open('resources/templates/overdue_notification.html') as file:
             email_template = file.read()
     except IOError:
         print('The message template file was not found')
         return
+    return email_template
 
+
+def generate_email_body(client_full_name, book_title):
     # Replace placeholders with dynamic values
-    email_body = email_template\
+    email_body = EMAIL_TEMPLATE \
         .replace("[Client's Full Name]", client_full_name) \
         .replace("[Book Title]", book_title) \
-        .replace("[Late Fee]", late_fee) \
-        .replace("[Contact Email]", email_contact) \
-        .replace("[Library Manager]", library_manager) \
-        .replace("[Library Name]", library_name)
+        .replace("[Late Fee]", LATE_FEE) \
+        .replace("[Contact Email]", LIBRARY_EMAIL) \
+        .replace("[Library Manager]", LIBRARY_MANAGER) \
+        .replace("[Library Name]", LIBRARY_NAME)
 
     return email_body
 
@@ -34,7 +37,7 @@ def send_email(receiver: str, email_body: str):
     try:
         server.login(sender, password)
         msg = MIMEText(email_body, 'html')
-        msg['From'] = sender
+        msg['From'] = formataddr(('Alexandria Library', f'{sender}'))
         msg['To'] = receiver
         msg['Subject'] = 'Overdue Book Reminder '
         server.sendmail(sender, receiver, msg.as_string())
@@ -45,22 +48,36 @@ def send_email(receiver: str, email_body: str):
         server.quit()
 
 
-def main():
-    # Example dynamic values
-    client_full_name = "Keith Maxwell"
-    book_title = "The Catcher in the Rye"
-    late_fee = "€2"
-    email_contact = "alexandria.library@gmail.com"
-    library_manager = "Samia el Abodi"
-    library_name = "Alexandria Library"
-    email_body = generate_email_body(client_full_name, book_title, late_fee, email_contact, library_manager,
-                                     library_name)
-    if not email_body:
-        return
+def send_all_notifications():
+    # TODO: reuse database connection from main controller
+    from src.models.database import Database
+    database = Database()
+    dataframe = database.execute_query("""
+    SELECT c.name, c.surname, b.title, c.email FROM borrowings a
+    INNER JOIN books b ON a.book_id = b.book_id
+    INNER JOIN clients c ON a.client_id = c.client_id
+    WHERE ((a.to_date < CURDATE() and a.extension = 0) 
+        OR (a.to_date < DATE_ADD(CURDATE(), INTERVAL 7 DAY) AND a.extension = 1))
+        AND returned = 0
+        AND reminder_sent = 0;
+    """)
 
-    load_dotenv()
-    receiver = '704342@student.inholland.nl'
-    send_email(receiver, email_body)
+    email_counter = 0
+    for i, data in enumerate(dataframe):
+        name, surname, title, email = data
+        email_body = generate_email_body(f'{name} {surname}', f'{title}')
+        send_email(email, email_body)
+        email_counter += 1
+
+    return f'Total emails sent: {email_counter}'
 
 
-main()
+# Set library parameters
+LATE_FEE = "€2"
+LIBRARY_EMAIL = "alexandria.library@gmail.com"
+LIBRARY_MANAGER = "Samia el Abodi"
+LIBRARY_NAME = "Alexandria Library"
+EMAIL_TEMPLATE = read_html_template()
+
+if __name__ == '__main__':
+    send_all_notifications()
