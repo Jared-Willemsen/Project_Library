@@ -4,7 +4,7 @@ class BooksController:
         self.view = view
 
         self.view.frames['books'].table.insert_rows(
-            self.model.database.execute_query('SELECT title, author, genre, language FROM books'))
+            self.model.database.execute_query('SELECT title, author, genre, language, book_id FROM books'))
         self._bind()
 
     def _bind(self):
@@ -13,9 +13,9 @@ class BooksController:
             '<Return>', lambda e: self.find(self.view.frames['books'].search_bar.get_search_input()))
         self.view.frames['books'].search_bar.button.configure(
             command=lambda: self.find(self.view.frames['books'].search_bar.get_search_input()))
+        
         self.view.frames['books'].add_button.configure(command=self.show_add_form)
-
-        self.view.frames['books'].data_form.accept_button.configure(command=self.add_book)
+        self.view.frames['books'].data_form.confirm_button.configure(command=self.add_book)
         self.view.frames['books'].data_form.cancel_button.configure(command=self.cancel_form)
 
     def cancel_form(self):

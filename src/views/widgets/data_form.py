@@ -18,10 +18,10 @@ class DataForm(ctk.CTkFrame):
             entry.grid(row=i+1, column=3, columnspan=3,padx=20, pady=10)       
             entry.insert(0, entry_values[i])     
         
-        self.accept_button = ctk.CTkButton(self, text='accept', width=20)
+        self.confirm_button = ctk.CTkButton(self, text='confirm', width=20)
         self.reset_button = ctk.CTkButton(self, text='reset', width=20, command=self.reset_entries)
         self.cancel_button = ctk.CTkButton(self, text='cancel', width=20)
-        self.accept_button.grid(row=len(form_headings)+2, column=5, pady=10)
+        self.confirm_button.grid(row=len(form_headings)+2, column=5, pady=10)
         self.reset_button.grid(row=len(form_headings)+2, column=0, pady=10, padx=20)
         self.cancel_button.grid(row=len(form_headings)+2, column=4, pady=10)
 

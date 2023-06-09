@@ -14,7 +14,8 @@ class ReservationView(ctk.CTkFrame):
                                    font=ctk.CTkFont(size=25, weight='bold'))
         self.search_bar = SearchBar(self, column_names, 35, 700)
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
-        self.data_form = DataForm(self, column_names, ['']*len(column_names))
+        self.add_button = ctk.CTkButton(self, text='add')
+        self.data_form = DataForm(self, ['Book_Id', 'Client_Id'], ['', ''])
 
         self.show_widgets()
         self.hide_form()
@@ -31,8 +32,10 @@ class ReservationView(ctk.CTkFrame):
         self.header.grid(row=0, column=0, padx=20, pady=20)
         self.search_bar.grid(row=1, column=0, padx=20, pady=20)
         self.table.grid(row=2, column=0, padx=20, pady=20)
+        self.add_button.grid(row=3, column=0)
 
     def hide_widgets(self):
         self.header.grid_forget()
         self.search_bar.grid_forget()
         self.table.grid_forget()
+        self.add_button.grid_forget()

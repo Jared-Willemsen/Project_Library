@@ -2,12 +2,12 @@ class Search:
     def __init__(self, database):
         self.database = database
 
-    def search_books(self, column, search_input):
-        query = f'SELECT title, author, genre, language FROM books WHERE {column} LIKE "%{search_input}%"'
+    def search_books(self, column, search_input, ):
+        query = f'SELECT title, author, genre, language, book_id FROM books WHERE {column} LIKE "%{search_input}%" '
         return self.database.execute_query(query)
 
     def search_clients(self, column, search_input):
-        query = f'SELECT name, surname, email language FROM clients WHERE {column} LIKE "%{search_input}%"'
+        query = f'SELECT name, surname, email language, clients_id FROM clients WHERE {column} LIKE "%{search_input}%"'
         return self.database.execute_query(query)
     
     def search_lendings(self, column, search_input):

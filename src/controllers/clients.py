@@ -4,7 +4,7 @@ class ClientsController:
         self.view = view
 
         self.view.frames['clients'].table.insert_rows(
-            self.model.database.execute_query('SELECT name, surname, email FROM clients'))
+            self.model.database.execute_query('SELECT name, surname, email, client_id FROM clients'))
         
         self._bind()
 
@@ -14,6 +14,24 @@ class ClientsController:
             '<Return>', lambda e: self.find(self.view.frames['clients'].search_bar.get_search_input()))
         self.view.frames['clients'].search_bar.button.configure(
             command=lambda: self.find(self.view.frames['clients'].search_bar.get_search_input()))
+        
+        self.view.frames['clients'].add_button.configure(command=self.show_add_form)
+        self.view.frames['clients'].data_form.confirm_button.configure(command=self.add_client)
+        self.view.frames['clients'].data_form.cancel_button.configure(command=self.cancel_form)
+
+    def cancel_form(self):
+        self.view.frames['clients'].hide_form()
+        self.view.frames['clients'].show_widgets()
+
+    def show_add_form(self):
+        self.view.frames['clients'].hide_widgets()
+        self.view.frames['clients'].show_form('Add client')
+
+    def add_client(self):
+        client_data = self.view.frames['clients'].data_form.get_data_from_entries()
+        '''add to the table'''
+        self.cancel_form()
+
 
     def find(self, search_input):
         self.view.frames['clients'].table.clear_rows()

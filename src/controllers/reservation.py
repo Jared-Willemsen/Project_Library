@@ -14,6 +14,23 @@ class ReservationsController:
             '<Return>', lambda e: self.find(self.view.frames['reservation'].search_bar.get_search_input()))
         self.view.frames['reservation'].search_bar.button.configure(
             command=lambda: self.find(self.view.frames['reservation'].search_bar.get_search_input()))
+        
+        self.view.frames['reservation'].add_button.configure(command=self.show_add_form)
+        self.view.frames['reservation'].data_form.confirm_button.configure(command=self.add_reservation)
+        self.view.frames['reservation'].data_form.cancel_button.configure(command=self.cancel_form)
+
+    def cancel_form(self):
+        self.view.frames['reservation'].hide_form()
+        self.view.frames['reservation'].show_widgets()
+
+    def show_add_form(self):
+        self.view.frames['reservation'].hide_widgets()
+        self.view.frames['reservation'].show_form('Add book')
+
+    def add_reservation(self):
+        reservation_data = self.view.frames['reservation'].data_form.get_data_from_entries()
+        '''add to the table'''
+        self.cancel_form()
 
     def find(self, search_input):
         self.view.frames['reservation'].table.clear_rows()

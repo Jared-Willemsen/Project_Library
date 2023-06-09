@@ -15,6 +15,23 @@ class LentController:
         self.view.frames['lent'].search_bar.button.configure(
             command=lambda: self.find(self.view.frames['lent'].search_bar.get_search_input()))
 
+        self.view.frames['lent'].add_button.configure(command=self.show_add_form)
+        self.view.frames['lent'].data_form.confirm_button.configure(command=self.add_borrowing)
+        self.view.frames['lent'].data_form.cancel_button.configure(command=self.cancel_form)
+
+    def cancel_form(self):
+        self.view.frames['lent'].hide_form()
+        self.view.frames['lent'].show_widgets()
+
+    def show_add_form(self):
+        self.view.frames['lent'].hide_widgets()
+        self.view.frames['lent'].show_form('Add borrowing')
+
+    def add_borrowing(self):
+        book_data = self.view.frames['lent'].data_form.get_data_from_entries()
+        '''add to the table'''
+        self.cancel_form()
+
     def find(self, search_input):
         self.view.frames['lent'].table.clear_rows()
         search_column = self.view.frames['lent'].search_bar.get_selected_column()

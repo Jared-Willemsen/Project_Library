@@ -64,7 +64,7 @@ class BooksView(ctk.CTkFrame):
         self.remove_button.pack_forget()
 
     def show_widgets(self):
-        self.header.grid(row=0, column=0, padx=20, pady=20)
+        self.header.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
         self.search_bar.grid(row=1, column=0, padx=20, pady=20)
         self.table.grid(row=2, column=0, padx=20, pady=20)
         self.control_buttons.grid(row=3, column=0, pady=20)

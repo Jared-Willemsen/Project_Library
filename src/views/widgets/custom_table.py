@@ -37,7 +37,8 @@ class CustomTable(ctk.CTkFrame):
         return self.treeview.get_children(item)
 
     def get_selection(self):
-        return self.treeview.selection()
+        selected_item = self.treeview.focus()
+        return self.treeview.item(selected_item)
 
     def insert_rows(self, rows):
         for row in rows:
@@ -52,7 +53,6 @@ class CustomTable(ctk.CTkFrame):
         """Set custom ttk styles based on appearance mode."""
         style = ttk.Style()
         style.theme_use("default")
-
         appearance_mode = ctk.get_appearance_mode()
         if appearance_mode == 'Light':
             style.configure("Treeview",
