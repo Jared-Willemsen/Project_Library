@@ -17,8 +17,12 @@ class CustomTable(ctk.CTkFrame):
         self.treeview.column("#0", width=0, stretch=False)
         for i, heading in enumerate(column_names):
             width = column_widths[i] if column_widths else None
-            self.treeview.heading(heading, text=heading.title(), anchor="center")
-            self.treeview.column(heading, minwidth=width, width=width, anchor="center")
+            if i == 0:
+                self.treeview.heading(heading, text=heading.title(), anchor='w', command=lambda _col=heading: self.treeview_sort_column(_col, False))
+                self.treeview.column(heading, minwidth=width, width=width, anchor='w')
+            else:
+                self.treeview.heading(heading, text=heading.title(), anchor='center', command=lambda _col=heading: self.treeview_sort_column(_col, False))
+                self.treeview.column(heading, minwidth=width, width=width, anchor='center')
 
         # Configure grid weights
         self.grid_rowconfigure(0, weight=1)
@@ -37,8 +41,7 @@ class CustomTable(ctk.CTkFrame):
         return self.treeview.get_children(item)
 
     def get_selection(self):
-        selected_item = self.treeview.focus()
-        return self.treeview.item(selected_item)
+        return self.treeview.selection()
 
     def insert_rows(self, rows):
         for row in rows:
@@ -48,11 +51,30 @@ class CustomTable(ctk.CTkFrame):
         for row in self.treeview.get_children():
             self.treeview.delete(row)
 
+    def treeview_sort_column(self, col, reverse):
+        # sort column data
+        try:
+            data_list = [
+                (int(self.treeview.set(k, col)), k) for k in self.treeview.get_children("")
+            ]
+        except Exception:
+            data_list = [(self.treeview.set(k, col), k) for k in self.treeview.get_children("")]
+
+        data_list.sort(reverse=reverse)
+
+        # rearrange items in sorted positions
+        for index, (val, k) in enumerate(data_list):
+            self.treeview.move(k, "", index)
+
+        # reverse sort next time
+        self.treeview.heading(column=col, command=lambda _col=col: self.treeview_sort_column(_col, not reverse))
+
     @staticmethod
     def set_ttk_styles():
         """Set custom ttk styles based on appearance mode."""
         style = ttk.Style()
         style.theme_use("default")
+
         appearance_mode = ctk.get_appearance_mode()
         if appearance_mode == 'Light':
             style.configure("Treeview",
@@ -67,7 +89,7 @@ class CustomTable(ctk.CTkFrame):
             style.configure("Treeview.Heading",
                             background="#bfbfbf",
                             foreground="black",
-                            rowheight=45,
+                            padding=10,
                             relief="flat",
                             font=('Helvetica', 20, 'bold'))
             style.map("Treeview.Heading", background=[('active', '#3484F0')])
@@ -84,7 +106,7 @@ class CustomTable(ctk.CTkFrame):
             style.configure("Treeview.Heading",
                             background="#565b5e",
                             foreground="white",
-                            rowheight=45,
+                            padding=10,
                             relief="flat",
                             font=('Helvetica', 20, 'bold'))
             style.map("Treeview.Heading", background=[('active', '#3484F0')])
