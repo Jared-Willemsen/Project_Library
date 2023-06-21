@@ -27,15 +27,15 @@ class LentView(ctk.CTkFrame):
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
         
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')
-        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add borrowing',
+        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add',
                                         text_color='#ffffff', font=ctk.CTkFont(size=15),
                                         anchor='n', image=self.add_image, compound=ctk.RIGHT)
         
-        self.extend_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Extend borrowing',
+        self.extend_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Extend',
                                         text_color='#ffffff', font=ctk.CTkFont(size=15),
                                         anchor='n', image=self.edit_image, compound=ctk.RIGHT)
         
-        self.return_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Return book',
+        self.return_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Return',
                                         text_color='#ffffff', font=ctk.CTkFont(size=15),
                                         anchor='n', image=self.edit_image, compound=ctk.RIGHT)
         
@@ -59,7 +59,7 @@ class LentView(ctk.CTkFrame):
         self.header.grid(row=0, column=0, padx=20, pady=20)
         self.search_bar.grid(row=1, column=0, padx=20, pady=20)
         self.table.grid(row=2, column=0, padx=20, pady=20)
-        self.control_buttons.grid(row=3, column=0)
+        self.control_buttons.grid(row=3, column=0, padx=20, pady=20)
 
     def hide_widgets(self):
         self.header.grid_forget()
