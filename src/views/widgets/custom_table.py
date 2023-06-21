@@ -7,7 +7,7 @@ class CustomTable(ctk.CTkFrame):
         super().__init__(parent)
 
         # Create Treeview widget for the table
-        self.treeview = ttk.Treeview(self, columns=column_names, height=height)
+        self.treeview = ttk.Treeview(self, columns=column_names, height=height, selectmode="browse")
         self.scrollbar = ctk.CTkScrollbar(self, width=20, command=self.treeview.yview)
         self.treeview.configure(yscrollcommand=self.scrollbar.set)
         self.treeview.grid(row=0, column=0, sticky="nsew")
@@ -41,7 +41,10 @@ class CustomTable(ctk.CTkFrame):
         return self.treeview.get_children(item)
 
     def get_selection(self):
-        return self.treeview.selection()
+        selected_item = self.treeview.focus()
+        if selected_item == '':
+            return 'no selection'
+        return self.treeview.item(selected_item)
 
     def insert_rows(self, rows):
         for row in rows:

@@ -27,6 +27,7 @@ class BooksView(ctk.CTkFrame):
                                    font=ctk.CTkFont(size=25, weight='bold'))
         self.search_bar = SearchBar(self, column_names, 35, 700)
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
+        self.data_form = DataForm(self, column_names, [''] * len(column_names))
 
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')
         self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add',
@@ -41,7 +42,9 @@ class BooksView(ctk.CTkFrame):
                                            text_color='#ffffff', font=ctk.CTkFont(size=15),
                                            anchor='n', image=self.remove_image, compound=ctk.RIGHT)
 
-        self.data_form = DataForm(self, column_names, [''] * len(column_names))
+        self.add_button.pack(side=ctk.LEFT, padx=10)
+        self.edit_button.pack(side=ctk.LEFT, padx=10)
+        self.remove_button.pack(side=ctk.LEFT, padx=10)
 
         self.show_widgets()
         self.hide_form()
@@ -59,15 +62,10 @@ class BooksView(ctk.CTkFrame):
         self.search_bar.grid_forget()
         self.table.grid_forget()
         self.control_buttons.grid_forget()
-        self.add_button.pack_forget()
-        self.edit_button.pack_forget()
-        self.remove_button.pack_forget()
+
 
     def show_widgets(self):
-        self.header.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
-        self.search_bar.grid(row=1, column=0, padx=20, pady=20)
-        self.table.grid(row=2, column=0, padx=20, pady=20)
+        self.header.grid(row=0, column=0, columnspan=2, pady=20)
+        self.search_bar.grid(row=1, column=0, pady=20)
+        self.table.grid(row=2, column=0, pady=20)
         self.control_buttons.grid(row=3, column=0, pady=20)
-        self.add_button.pack(side=ctk.LEFT, padx=10)
-        self.edit_button.pack(side=ctk.LEFT, padx=10)
-        self.remove_button.pack(side=ctk.LEFT, padx=10)

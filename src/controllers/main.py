@@ -19,7 +19,7 @@ class Controller:
         self.books_controller = BooksController(model, view)
         self.clients_controller = ClientsController(model, view)
         self.lent_controller = LentController(model, view)
-        self.reservations_controller = ReservationsController(model, view)
+        #self.reservations_controller = ReservationsController(model, view)
 
     def start(self):
         self.view.start_mainloop()

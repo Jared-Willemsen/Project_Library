@@ -1,3 +1,5 @@
+from CTkMessagebox import CTkMessagebox
+
 from .root import Root
 from .login import LoginView
 from .forgot_password import ForgotPasswordView
@@ -28,7 +30,7 @@ class View:
         self.frames['books'] = BooksView(self.root)
         self.frames['clients'] = ClientsView(self.root)
         self.frames['lent'] = LentView(self.root)
-        self.frames['reservation'] = ReservationView(self.root)
+        #self.frames['reservation'] = ReservationView(self.root)
         self.sidebar = SidebarView(self.root)
 
         # grid frames
@@ -38,7 +40,7 @@ class View:
         self.frames['books'].grid(row=0, column=1, sticky='nsew')
         self.frames['clients'].grid(row=0, column=1, sticky='nsew')
         self.frames['lent'].grid(row=0, column=1, sticky='nsew')
-        self.frames['reservation'].grid(row=0, column=1, sticky='nsew')
+        #self.frames['reservation'].grid(row=0, column=1, sticky='nsew')
         self.sidebar.grid(row=0, column=0, sticky='nsew')
 
         # select default frame
@@ -61,6 +63,9 @@ class View:
         else:
             self.sidebar.toggle_visibility(visible=True)
             self.sidebar.highlight_sidebar_selection(name)
+
+    def give_error_message(self, error_message):
+        CTkMessagebox(title='Error', message=error_message, icon='cancel')
 
     def hide_frames(self):
         for frame in self.frames.values():
