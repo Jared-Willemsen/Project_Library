@@ -50,10 +50,7 @@ CREATE TABLE IF NOT EXISTS `Library`.`Borrowings` (
   `client_id` INT NOT NULL,
   `from_date` DATE NOT NULL,
   `to_date` DATE NULL,
-  `extension` BINARY NOT NULL,
   PRIMARY KEY (`borrowed_id`),
-  UNIQUE INDEX `idClients_UNIQUE` (`client_id` ASC) VISIBLE,
-  UNIQUE INDEX `idBooks_UNIQUE` (`book_id` ASC) VISIBLE,
   UNIQUE INDEX `idLent_books_UNIQUE` (`borrowed_id` ASC) VISIBLE,
   CONSTRAINT `book_id`
     FOREIGN KEY (`book_id`)
@@ -251,13 +248,13 @@ VALUES
 -- -----------------------------------------------------
 -- Insert Data for borrowings
 -- -----------------------------------------------------
-INSERT INTO Borrowings(book_id, client_id, from_date, to_date, extension)
+INSERT INTO Borrowings(book_id, client_id, from_date, to_date)
 VALUES
-    (1, 2, '2022-01-01', '2022-01-15', 0),
-    (2, 3, '2022-01-02', '2022-01-16', 1),
-    (3, 4, '2022-01-03', '2022-01-17', 0),
-    (4, 5, '2022-01-04', '2022-01-18', 1),
-    (5, 1, '2022-01-05', '2022-01-19', 0);
+    (1, 2, '2022-01-01', '2022-01-15'),
+    (2, 3, '2022-01-02', '2022-01-16'),
+    (3, 4, '2022-01-03', '2022-01-17'),
+    (4, 5, '2022-01-04', '2022-01-18'),
+    (5, 1, '2022-01-05', '2022-01-19');
 
 
 -- -----------------------------------------------------

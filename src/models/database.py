@@ -15,9 +15,10 @@ class Database:
         self.host = os.getenv("MYSQL_HOST")
         self.user = os.getenv("MYSQL_USER")
         self.password = os.getenv("MYSQL_PASSWORD")
-        self.database = os.getenv("MYSQL_DATABASE")
+        self.database = 'library' #os.getenv("MYSQL_DATABASE")
 
         self.pool = None
+        print(self.database)
 
     def create_connection_pool(self):
         """Create a connection pool"""
@@ -60,6 +61,7 @@ class Database:
 
     def execute_query(self, query: str, values: str | tuple[str, ...] = None):
         """Execute raw SQL query within a session"""
+        print(query)
         connection = self.get_connection()
         try:
             cursor = connection.cursor()

@@ -10,7 +10,7 @@ class BookModel:
         query = f'''INSERT INTO books(title, author, genre, language)
                     VALUES('{data[0]}', '{data[1]}', '{data[2]}', '{data[3]}') '''
         print(query)
-        return self.database.execute_query(query)
+        self.database.execute_query(query)
     
     def edit_book(self, data, id):
         query = f'''UPDATE books
@@ -20,4 +20,4 @@ class BookModel:
                         language='{data[3]}'
                     WHERE book_id={id}'''
         print(query)
-        return self.database.execute_query(query)
+        self.database.execute_query(query)

@@ -1,4 +1,4 @@
-
+import customtkinter as ctk
 
 class LentController:
     def __init__(self, model, view):
@@ -6,7 +6,7 @@ class LentController:
         self.view = view
 
         self.view.frames['lent'].table.insert_rows(
-            self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.borrow_date, c.return_date, c.borrowing_id FROM books a, clients b, borrowings c WHERE a.book_id=c.book_id and b.client_id=c.client_id'))
+            self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.from_date, c.to_date, c.borrowed_id FROM books a, clients b, borrowings c WHERE a.book_id=c.book_id and b.client_id=c.client_id'))
         
         self._bind()
 
@@ -24,6 +24,8 @@ class LentController:
     def cancel_form(self):
         self.view.frames['lent'].hide_form()
         self.view.frames['lent'].show_widgets()
+        self.view.sidebar.books_button.configure(state=ctk.NORMAL)
+        self.view.sidebar.clients_button.configure(state=ctk.NORMAL)
 
     def show_add_conformation(self):
         #set confirm button
@@ -42,6 +44,9 @@ class LentController:
         self.view.frames['lent'].hide_widgets()
         self.view.frames['lent'].show_form('Add borrowing')
         self.view.frames['lent'].conformation_frame.change_labels([book['values'][0], f'{client["values"][0]} {client["values"][1]}'])
+
+        self.view.sidebar.books_button.configure(state = ctk.DISABLED)
+        self.view.sidebar.clients_button.configure(state = ctk.DISABLED)
     
     def show_return_conformation(self):
         #get selected borrowing
@@ -67,11 +72,14 @@ class LentController:
     '''
     
     def add_borrowing(self):
-        '''add to the table'''
+        book_id = self.view.frames['books'].table.get_selection()['values'][4]
+        client_id = self.view.frames['clients'].table.get_selection()['values'][3]
+        self.model.lent_model.add_lending(book_id, client_id)
+        self.find(self.view.frames['lent'].search_bar.get_search_input())
         self.cancel_form()
     
     def add_return_date(self):
-        
+        #
         self.cancel_form()
 
     def find(self, search_input):
@@ -82,8 +90,8 @@ class LentController:
         elif search_column == 'Client':
             search_column = 'CONCAT(b.name, " ", b.surname)'
         elif search_column == 'From':
-            search_column = 'c.borrow_date'
+            search_column = 'c.from_date'
         elif search_column == 'To':
-            search_column  = 'c.return_date'
+            search_column  = 'c.to_date'
         self.view.frames['lent'].table.insert_rows(self.model.search.search_lendings(search_column, search_input))
     
