@@ -46,12 +46,17 @@ class LoginView(ctk.CTkFrame):
 
         self.forgot_password = ctk.CTkLabel(self, text='Forgot your password?', text_color='#0074cc',
                                             font=ctk.CTkFont(size=15, underline=True), anchor='w', cursor='hand2')
-        self.forgot_password.grid(row=6, column=1, padx=25, pady=10, columnspan=2, sticky='w')
+        self.forgot_password.grid(row=6, column=1, padx=25, pady=(10, 5), columnspan=2, sticky='w')
+
+        self.guest_login_button = ctk.CTkLabel(self, text='Continue as guest', text_color='#0074cc',
+                                            font=ctk.CTkFont(size=15, underline=True), anchor='w', cursor='hand2')
+        self.guest_login_button.grid(row=7, column=1, padx=25, pady=(5, 10), columnspan=2, sticky='w')
+        # TODO: add guest login access level
 
         self.login_button = ctk.CTkButton(self, height=40, width=200, border_spacing=10, text='Login',
                                           text_color='#ffffff', font=ctk.CTkFont(size=20, weight='bold'),
                                           anchor='n')
-        self.login_button.grid(row=7, column=1, columnspan=2, pady=20)
+        self.login_button.grid(row=8, column=1, columnspan=2, pady=20)
 
     def show_messagebox(self, **kwargs):
         CTkMessagebox(self, **kwargs)

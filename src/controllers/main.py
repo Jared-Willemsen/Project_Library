@@ -1,4 +1,5 @@
 from .login import LoginController
+from .forgot_password import ForgotPasswordController
 from .sidebar import SidebarController
 from .books import BooksController
 from .clients import ClientsController
@@ -14,7 +15,8 @@ class Controller:
         self.model = model
         self.view = view
 
-        self.signin_controller = LoginController(model, view)
+        self.loginin_controller = LoginController(model, view)
+        self.forgot_password_controller = ForgotPasswordController(model, view)
         self.sidebar_controller = SidebarController(model, view)
         self.books_controller = BooksController(model, view)
         self.clients_controller = ClientsController(model, view)
