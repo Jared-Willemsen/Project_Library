@@ -16,19 +16,22 @@ class ReservationsController:
             command=lambda: self.find(self.view.frames['reservation'].search_bar.get_search_input()))
         
         self.view.frames['reservation'].add_button.configure(command=self.show_add_form)
-        self.view.frames['reservation'].data_form.confirm_button.configure(command=self.add_reservation)
-        self.view.frames['reservation'].data_form.cancel_button.configure(command=self.cancel_form)
+        self.view.frames['reservation'].conformation_frame.confirm_button.configure(command=self.add_reservation)
+        self.view.frames['reservation'].conformation_frame.cancel_button.configure(command=self.cancel_form)
 
     def cancel_form(self):
         self.view.frames['reservation'].hide_form()
         self.view.frames['reservation'].show_widgets()
 
     def show_add_form(self):
+        #get selected book and client
+        book = self.view.frames['books'].table.get_selection()['values']
+        client = self.view.frames['clients'].table.get_selection()['values']
         self.view.frames['reservation'].hide_widgets()
-        self.view.frames['reservation'].show_form('Add book')
+        self.view.frames['reservation'].show_form('Add borrowing')
+        self.view.frames['reservation'].conformation_frame.change_labels([book[0], f'{client[0]} {client[1]}'])
 
     def add_reservation(self):
-        reservation_data = self.view.frames['reservation'].data_form.get_data_from_entries()
         '''add to the table'''
         self.cancel_form()
 

@@ -7,7 +7,7 @@ class Search:
         return self.database.execute_query(query)
 
     def search_clients(self, column, search_input):
-        query = f'SELECT name, surname, email language, clients_id FROM clients WHERE {column} LIKE "%{search_input}%"'
+        query = f'SELECT name, surname, email language, client_id FROM clients WHERE {column} LIKE "%{search_input}%"'
         return self.database.execute_query(query)
     
     def search_lendings(self, column, search_input):

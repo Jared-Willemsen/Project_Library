@@ -71,7 +71,8 @@ class Database:
             logging.error(f"Error executing query: {err}")
             raise
         finally:
-            self.release_connection(connection)
+            self.commit(connection)
+            #self.release_connection(connection)
             logging.info("Connection pool released successfully.")
 
     def start_transaction(self):

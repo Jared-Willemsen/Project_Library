@@ -36,6 +36,10 @@ class DataForm(ctk.CTkFrame):
         for entry in self.entries:
             entry.delete(0, ctk.END)
     
+    def fill_entries(self, values):
+        for i, entry in enumerate(self.entries):
+            entry.insert(0, values[i])
+
     def get_data_from_entries(self):
         data_input = []
         for entry in self.entries:
