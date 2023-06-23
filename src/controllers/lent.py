@@ -6,7 +6,7 @@ class LentController:
         self.view = view
 
         self.view.frames['lent'].table.insert_rows(
-            self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.borrow_date, c.return_date, c.borrowing_id FROM books a, clients b, borrowings c WHERE a.book_id=c.book_id and b.client_id=c.client_id'))
+            self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.from_date, c.to_date, c.borrowed_id FROM books a, clients b, borrowings c WHERE a.book_id=c.book_id and b.client_id=c.client_id'))
         
         self._bind()
 
