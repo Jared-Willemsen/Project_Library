@@ -61,8 +61,9 @@ class BooksController:
         #edits book in the database
         self.model.book_model.edit_book(book_data, book_id)
 
-        #update the table and return to it
+        #update tables and return close form
         self.find(self.view.frames['books'].search_bar.get_search_input())
+        self.find(self.view.frames['lent'].search_bar.get_search_input())
         self.cancel_form()
 
     def find(self, search_input):

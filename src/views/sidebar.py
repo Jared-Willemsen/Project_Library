@@ -41,12 +41,12 @@ class SidebarView(ctk.CTkFrame):
 
         self.books_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
                                           text='Books', fg_color='transparent', text_color=('gray10', 'gray90'),
-                                          hover_color=('gray70', 'gray30'), image=self.books_image, anchor='w')
+                                          hover_color=('gray70', 'gray30'), image=self.books_image, anchor='w', state=ctk.NORMAL)
         self.books_button.pack(side=ctk.TOP, fill=ctk.X)
 
         self.clients_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
                                             text='Clients', fg_color='transparent', text_color=('gray10', 'gray90'),
-                                            hover_color=('gray70', 'gray30'), image=self.clients_image, anchor='w')
+                                            hover_color=('gray70', 'gray30'), image=self.clients_image, anchor='w', state=ctk.NORMAL)
         self.clients_button.pack(side=ctk.TOP, fill=ctk.X)
 
         self.lent_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
