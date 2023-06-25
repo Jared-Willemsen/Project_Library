@@ -8,7 +8,6 @@ from .overview import OverviewView
 from .books import BooksView
 from .clients import ClientsView
 from .lent import LentView
-from .reservation import ReservationView
 
 
 class View:
@@ -64,8 +63,9 @@ class View:
             self.sidebar.toggle_visibility(visible=True)
             self.sidebar.highlight_sidebar_selection(name)
 
-    def give_error_message(self, error_message):
-        CTkMessagebox(title='Error', message=error_message, icon='cancel')
+    @staticmethod
+    def show_messagebox(*args, **kwargs):
+        CTkMessagebox(*args, cancel_button='cross', **kwargs)
 
     def hide_frames(self):
         for frame in self.frames.values():

@@ -58,9 +58,6 @@ class LoginView(ctk.CTkFrame):
                                           anchor='n')
         self.login_button.grid(row=8, column=1, columnspan=2, pady=20)
 
-    def show_messagebox(self, **kwargs):
-        CTkMessagebox(self, **kwargs)
-
     def clear_form(self):
         if self.password_entry.get():
             self.password_entry.delete(0, ctk.END)

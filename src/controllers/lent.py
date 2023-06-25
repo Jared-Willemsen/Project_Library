@@ -1,90 +1,96 @@
 import customtkinter as ctk
 
+
 class LentController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        self.frame = self.view.frames['lent']
 
-        self.view.frames['lent'].table.insert_rows(
-            self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.from_date, c.to_date, c.borrowed_id FROM books a, clients b, borrowings c WHERE a.book_id=c.book_id and b.client_id=c.client_id'))
-        
+        self.frame.table.insert_rows(
+            self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.from_date, '
+                                              'c.to_date, c.borrowed_id FROM books a, clients b, borrowings c WHERE '
+                                              'a.book_id=c.book_id and b.client_id=c.client_id'))
+
         self._bind()
 
     def _bind(self):
         # Add keyboard/button controls for entries
-        self.view.frames['lent'].search_bar.entry.bind(
-            '<Return>', lambda e: self.find(self.view.frames['lent'].search_bar.get_search_input()))
-        self.view.frames['lent'].search_bar.button.configure(
-            command=lambda: self.find(self.view.frames['lent'].search_bar.get_search_input()))
+        self.frame.search_bar.entry.bind(
+            '<Return>', lambda e: self.find(self.frame.search_bar.get_search_input()))
+        self.frame.search_bar.button.configure(
+            command=lambda: self.find(self.frame.search_bar.get_search_input()))
 
-        self.view.frames['lent'].add_button.configure(command=self.show_add_conformation)
-        self.view.frames['lent'].conformation_frame.cancel_button.configure(command=self.cancel_form)
-        self.view.frames['lent'].return_button.configure(command=self.show_return_conformation)
+        self.frame.add_button.configure(command=self.show_add_conformation)
+        self.frame.conformation_frame.cancel_button.configure(command=self.cancel_form)
+        self.frame.return_button.configure(command=self.show_return_conformation)
 
     def cancel_form(self):
-        self.view.frames['lent'].hide_form()
-        self.view.frames['lent'].show_widgets()
+        self.frame.hide_form()
+        self.frame.show_widgets()
         self.view.sidebar.books_button.configure(state=ctk.NORMAL)
         self.view.sidebar.clients_button.configure(state=ctk.NORMAL)
 
     def show_add_conformation(self):
-        #set confirm button
-        self.view.frames['lent'].conformation_frame.confirm_button.configure(command=self.add_borrowing)
-        
-        #get selected book and client
+        # set confirm button
+        self.frame.conformation_frame.confirm_button.configure(command=self.add_borrowing)
+
+        # get selected book and client
         book = self.view.frames['books'].table.get_selection()
         client = self.view.frames['clients'].table.get_selection()
 
-        #check selection
+        # check selection
         if book == 'no selection' or client == 'no selection':
-            self.view.give_error_message('please select a book and client')
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please select a book and client',
+                                      icon='warning')
             return
 
-        #switch widgets
-        self.view.frames['lent'].hide_widgets()
-        self.view.frames['lent'].show_form('Add borrowing')
-        self.view.frames['lent'].conformation_frame.change_labels([book['values'][0], f'{client["values"][0]} {client["values"][1]}'])
+        # switch widgets
+        self.frame.hide_widgets()
+        self.frame.show_form('Add borrowing')
+        self.frame.conformation_frame.change_labels(
+            [book['values'][0], f'{client["values"][0]} {client["values"][1]}'])
 
-        self.view.sidebar.books_button.configure(state = ctk.DISABLED)
-        self.view.sidebar.clients_button.configure(state = ctk.DISABLED)
-    
+        self.view.sidebar.books_button.configure(state=ctk.DISABLED)
+        self.view.sidebar.clients_button.configure(state=ctk.DISABLED)
+
     def show_return_conformation(self):
-        #get selected borrowing
-        borrowing = self.view.frames['lent'].table.get_selection()['values']
+        # get selected borrowing
+        borrowing = self.frame.table.get_selection()['values']
 
         if borrowing[3] != 'None':
-            self.view.give_error_message('please select a current borrowing')
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please select a current borrowing',
+                                      icon='warning')
             return
-        
-        #set confirm button
-        self.view.frames['lent'].conformation_frame.confirm_button.configure(command=self.add_return_date)
 
-        #switch widgets
-        self.view.frames['lent'].hide_widgets()
-        self.view.frames['lent'].show_form('Return borrowing')
-        self.view.frames['lent'].conformation_frame.change_labels([borrowing[0], borrowing[1]])
-        
+        # set confirm button
+        self.frame.conformation_frame.confirm_button.configure(command=self.add_return_date)
+
+        # switch widgets
+        self.frame.hide_widgets()
+        self.frame.show_form('Return borrowing')
+        self.frame.conformation_frame.change_labels([borrowing[0], borrowing[1]])
 
     '''
     ===========================
     MODEL FUNCTIONS
     ===========================
     '''
-    
+
     def add_borrowing(self):
         book_id = self.view.frames['books'].table.get_selection()['values'][4]
         client_id = self.view.frames['clients'].table.get_selection()['values'][3]
         self.model.lent_model.add_lending(book_id, client_id)
-        self.find(self.view.frames['lent'].search_bar.get_search_input())
+        self.find(self.frame.search_bar.get_search_input())
         self.cancel_form()
-    
+
     def add_return_date(self):
         #
         self.cancel_form()
 
     def find(self, search_input):
-        self.view.frames['lent'].table.clear_rows()
-        search_column = self.view.frames['lent'].search_bar.get_selected_column()
+        self.frame.table.clear_rows()
+        search_column = self.frame.search_bar.get_selected_column()
         if search_column == 'Book':
             search_column = 'a.title'
         elif search_column == 'Client':
@@ -92,6 +98,5 @@ class LentController:
         elif search_column == 'From':
             search_column = 'c.from_date'
         elif search_column == 'To':
-            search_column  = 'c.to_date'
-        self.view.frames['lent'].table.insert_rows(self.model.search.search_lendings(search_column, search_input))
-    
+            search_column = 'c.to_date'
+        self.frame.table.insert_rows(self.model.search.search_lendings(search_column, search_input))
