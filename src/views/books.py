@@ -30,7 +30,7 @@ class BooksView(ctk.CTkFrame):
         self.data_form = DataForm(self, column_names, [''] * len(column_names))
 
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')
-        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add',
+        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add book',
                                         text_color='#ffffff', font=ctk.CTkFont(size=15),
                                         anchor='n', image=self.add_image, compound=ctk.RIGHT)
 
@@ -62,7 +62,6 @@ class BooksView(ctk.CTkFrame):
         self.search_bar.grid_forget()
         self.table.grid_forget()
         self.control_buttons.grid_forget()
-
 
     def show_widgets(self):
         self.header.grid(row=0, column=0, columnspan=2, pady=20)

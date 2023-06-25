@@ -7,6 +7,7 @@ from .widgets.custom_table import CustomTable
 from .widgets.confirmation_frame import ComfirmationFrame
 from src.resources.config import IMAGES_DIR
 
+
 class LentView(ctk.CTkFrame):
     def __init__(self, master) -> None:
         super().__init__(master, fg_color='transparent')
@@ -16,29 +17,29 @@ class LentView(ctk.CTkFrame):
         # load images
         self.add_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'add_light.png')),
                                       size=(24, 24))
-        self.edit_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'edit_light.png')),
+        self.edit_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'extend_light.png')),
                                        size=(24, 24))
-        self.remove_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'remove_light.png')),
+        self.remove_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'return_light.png')),
                                          size=(24, 24))
-        
+
         self.header = ctk.CTkLabel(self, text='Lent books',
                                    font=ctk.CTkFont(size=25, weight='bold'))
         self.search_bar = SearchBar(self, column_names, 35, 700)
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
-        
+
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')
-        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add',
+        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Borrow book',
                                         text_color='#ffffff', font=ctk.CTkFont(size=15),
                                         anchor='n', image=self.add_image, compound=ctk.RIGHT)
-        
+
         self.extend_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Extend',
-                                        text_color='#ffffff', font=ctk.CTkFont(size=15),
-                                        anchor='n', image=self.edit_image, compound=ctk.RIGHT)
-        
+                                           text_color='#ffffff', font=ctk.CTkFont(size=15),
+                                           anchor='n', image=self.edit_image, compound=ctk.RIGHT)
+
         self.return_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Return',
-                                        text_color='#ffffff', font=ctk.CTkFont(size=15),
-                                        anchor='n', image=self.edit_image, compound=ctk.RIGHT)
-        
+                                           text_color='#ffffff', font=ctk.CTkFont(size=15),
+                                           anchor='n', image=self.remove_image, compound=ctk.RIGHT)
+
         self.conformation_frame = ComfirmationFrame(self, ['book', 'client'])
 
         self.add_button.pack(side=ctk.LEFT, padx=10)

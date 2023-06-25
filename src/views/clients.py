@@ -8,6 +8,7 @@ from .widgets.custom_table import CustomTable
 from .widgets.data_form import DataForm
 from src.resources.config import IMAGES_DIR
 
+
 class ClientsView(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master, fg_color='transparent')
@@ -30,7 +31,7 @@ class ClientsView(ctk.CTkFrame):
         self.data_form = DataForm(self, column_names, ['']*len(column_names))
 
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')
-        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add',
+        self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Add client',
                                         text_color='#ffffff', font=ctk.CTkFont(size=15),
                                         anchor='n', image=self.add_image, compound=ctk.RIGHT)
 
@@ -68,5 +69,3 @@ class ClientsView(ctk.CTkFrame):
         self.search_bar.grid_forget()
         self.table.grid_forget()
         self.control_buttons.grid_forget()
-
-
