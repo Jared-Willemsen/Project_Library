@@ -13,6 +13,7 @@ class ClientsView(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master, fg_color='transparent')
         self.grid_columnconfigure(0, weight=1)
+        view_names = ['all clients', 'borrowing clients', 'non-borrowing clients']
         column_names = ['name', 'surname', 'email']
 
         # load images
@@ -26,7 +27,7 @@ class ClientsView(ctk.CTkFrame):
         # create widgets                    
         self.header = ctk.CTkLabel(self, text='Manage clients',
                                    font=ctk.CTkFont(size=25, weight='bold'))
-        self.search_bar = SearchBar(self, column_names, 35, 700)
+        self.search_bar = SearchBar(self, view_names, column_names, 35, 700)
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
         self.data_form = DataForm(self, column_names, ['']*len(column_names))
 

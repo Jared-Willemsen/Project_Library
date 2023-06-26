@@ -5,22 +5,29 @@ class BooksController:
         self.frame = self.view.frames['books']
 
         self.frame.table.insert_rows(
-            self.model.database.execute_query('SELECT title, author, genre, language, book_id FROM books'))
+            self.model.database.execute_query('SELECT title, author, genre, language, book_id FROM books WHERE book_id != 1' ))
         self._bind()
 
     def _bind(self):
         # Add keyboard/button controls for entries
         self.frame.search_bar.entry.bind(
-            '<Return>', lambda e: self.find(self.frame.search_bar.get_search_input()))
+            '<Return>', lambda e: self.update_book_table(self.frame.search_bar.get_search_input()))
         self.frame.search_bar.button.configure(
-            command=lambda: self.find(self.frame.search_bar.get_search_input()))
+            command=lambda: self.update_book_table(self.frame.search_bar.get_search_input()))
 
         self.frame.add_button.configure(command=self.show_add_form)
         self.frame.edit_button.configure(command=self.show_edit_form)
+        self.frame.delete_button.configure(command=self.show_conformation_frame)
+        self.frame.conformation_frame.confirm_button.configure(command=self.delete_book)
         self.frame.data_form.cancel_button.configure(command=self.cancel_form)
+        self.frame.conformation_frame.cancel_button.configure(command=self.cancel_frame)
 
     def cancel_form(self):
         self.frame.hide_form()
+        self.frame.show_widgets()
+    
+    def cancel_frame(self):
+        self.frame.hide_frame()
         self.frame.show_widgets()
 
     def show_add_form(self):
@@ -31,6 +38,7 @@ class BooksController:
     def show_edit_form(self):
         # get selection
         book = self.frame.table.get_selection()
+        book_id = book['values'][4]
 
         # check selection
         if book == 'no selection':
@@ -42,7 +50,23 @@ class BooksController:
         self.frame.hide_widgets()
         self.frame.show_form('Edit book')
         self.frame.data_form.fill_entries(book['values'][0:4])
-        self.frame.data_form.confirm_button.configure(command=self.edit_book)
+        self.frame.data_form.confirm_button.configure(command=lambda: self.edit_book(book_id))
+    
+    def show_conformation_frame(self):
+        self.frame.hide_widgets()
+        self.frame.show_frame('Confirm Deletion')
+        
+        book = self.frame.table.get_selection()
+        book_id = book['values'][4]
+
+        self.frame.conformation_frame.change_labels(book['values'][0:4])
+        self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_book(book_id))
+    
+    '''
+    ===========================
+    MODEL FUNCTIONS
+    ===========================
+    '''
 
     def add_book(self):
         # gets imputted data from the user
@@ -52,23 +76,45 @@ class BooksController:
         self.model.book_model.add_book(book_data)
 
         # update the table and return to it
-        self.find(self.frame.search_bar.get_search_input())
+        self.update_book_table(self.frame.search_bar.get_search_input())
         self.cancel_form()
 
-    def edit_book(self):
+    def edit_book(self, book_id):
         # gets imputted data from the user and the id from the book that is to be edited
         book_data = self.frame.data_form.get_data_from_entries()
-        book_id = self.frame.table.get_selection()['values'][4]
 
         # edits book in the database
         self.model.book_model.edit_book(book_data, book_id)
 
-        # update tables and return close form
-        self.find(self.frame.search_bar.get_search_input())
-        self.find(self.view.frames['lent'].search_bar.get_search_input())
+        # update tables and close form
+        self.update_book_table(self.frame.search_bar.get_search_input())
+        self.update_lent_table(self.view.frames['lent'].search_bar.get_search_input())
         self.cancel_form()
+    
+    def delete_book(self, book_id):
+        #delete book from database
+        self.model.book_model.delete_book(book_id)
+        
+        # update tables and close frame
+        self.update_book_table(self.frame.search_bar.get_search_input())
+        self.update_lent_table(self.view.frames['lent'].search_bar.get_search_input())
+        self.cancel_frame()
 
-    def find(self, search_input):
+    def update_book_table(self, search_input):
         self.frame.table.clear_rows()
         search_column = self.frame.search_bar.get_selected_column()
-        self.frame.table.insert_rows(self.model.book_model.search_books(search_column, search_input))
+        view_name = self.frame.search_bar.get_selected_view()
+        self.frame.table.insert_rows(self.model.book_model.search_books(view_name, search_column, search_input))
+    
+    def update_lent_table(self, search_input):
+        self.view.frames['lent'].table.clear_rows()
+        search_column = self.view.frames['lent'].search_bar.get_selected_column()
+        if search_column == 'Book':
+            search_column = 'a.title'
+        elif search_column == 'Client':
+            search_column = 'CONCAT(b.name, " ", b.surname)'
+        elif search_column == 'From':
+            search_column = 'c.from_date'
+        elif search_column == 'To':
+            search_column = 'c.to_date'
+        self.view.frames['lent'].table.insert_rows(self.model.lent_model.search_lendings(search_column, search_input))

@@ -50,6 +50,8 @@ CREATE TABLE IF NOT EXISTS `Library`.`Borrowings` (
   `client_id` INT NOT NULL,
   `from_date` DATE NOT NULL,
   `to_date` DATE NULL,
+  `due_date` DATE NULL,
+  `extention` BINARY,
   PRIMARY KEY (`borrowed_id`),
   UNIQUE INDEX `idLent_books_UNIQUE` (`borrowed_id` ASC) VISIBLE,
   CONSTRAINT `book_id`
@@ -127,6 +129,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Insert Data for books
 -- -----------------------------------------------------
+INSERT INTO Books(book_id, title, author, genre, language)
+VALUES (1, 'N/A', 'N/A', 'N/A', 'N/A');
+
 INSERT INTO Books(title, author, genre, language)
 VALUES
     ('The Great Adventure', 'John Smith', 'Adventure', 'English'),
@@ -237,6 +242,9 @@ VALUES
 -- -----------------------------------------------------
 -- Insert Data for clients
 -- -----------------------------------------------------
+INSERT INTO Clients(client_id, name, surname, email, password)
+VALUES (1, 'N/A', 'N/A', 'N/A', 'N/A');
+
 INSERT INTO Clients(name, surname, email, password)
 VALUES
     ('John', 'Doe', 'johndoe@example.com', 'password1'),
@@ -250,23 +258,23 @@ VALUES
 -- -----------------------------------------------------
 INSERT INTO Borrowings(book_id, client_id, from_date, to_date)
 VALUES
-    (1, 2, '2022-01-01', '2022-01-15'),
-    (2, 3, '2022-01-02', '2022-01-16'),
-    (3, 4, '2022-01-03', '2022-01-17'),
-    (4, 5, '2022-01-04', '2022-01-18'),
-    (5, 1, '2022-01-05', '2022-01-19');
+    (2, 6, '2022-01-01', '2022-01-15'),
+    (3, 5, '2022-01-02', '2022-01-16'),
+    (4, 4, '2022-01-03', '2022-01-17'),
+    (5, 3, '2022-01-04', '2022-01-18'),
+    (6, 2, '2022-01-05', '2022-01-19');
 
 
 -- -----------------------------------------------------
 -- Insert Data for reservings
 -- -----------------------------------------------------
-INSERT INTO Reservings(client_id, book_id, from_date, to_date)
-VALUES
-    (1, 1, '2023-06-01', '2023-06-08'),
-    (2, 3, '2023-05-15', '2023-05-22'),
-    (3, 2, '2023-07-01', '2023-07-08'),
-    (4, 5, '2023-08-01', '2023-08-08'),
-    (5, 4, '2023-09-01', '2023-09-08');
+-- INSERT INTO Reservings(client_id, book_id, from_date, to_date)
+-- VALUES
+--     (2, 2, '2023-06-01', '2023-06-08'),
+--     (3, 4, '2023-05-15', '2023-05-22'),
+--     (4, 3, '2023-07-01', '2023-07-08'),
+--     (5, 6, '2023-08-01', '2023-08-08'),
+--     (6, 7, '2023-09-01', '2023-09-08');
 
 
 -- -----------------------------------------------------
@@ -284,7 +292,8 @@ VALUES
     ('James', 'Davis', 'jamesdavis@example.com', 'password12345'),
     ('Ava', 'Wilson', 'avawilson@example.com', 'password678'),
     ('Michael', 'Anderson', 'michaelanderson@example.com', 'password901'),
-    ('Sophia', 'Thompson', 'sophiathompson@example.com', 'password234');
+    ('Sophia', 'Thompson', 'sophiathompson@example.com', 'password234'),
+    ('quick', 'login', 'a', 'b');
 
 -- -----------------------------------------------------
 -- Insert Data for jobs
@@ -296,6 +305,46 @@ VALUES
     (3, 'Clerk', '2022-01-01', NULL),
     (4, 'Janitor', '2021-07-01', '2022-06-30'),
     (5, 'Security Guard', '2021-01-01', '2021-12-31');
+
+-- -----------------------------------------------------
+-- create delete triggers
+-- -----------------------------------------------------
+
+delimiter #
+
+CREATE TRIGGER change_book_references_in_borrowings
+  BEFORE DELETE ON Books
+  FOR EACH ROW
+  BEGIN 
+  UPDATE Borrowings
+    SET book_id = 1
+    WHERE book_id = old.book_id;
+
+END#
+
+CREATE TRIGGER change_client_references_in_borrowings
+  BEFORE DELETE ON Clients
+  FOR EACH ROW
+  BEGIN 
+  UPDATE Borrowings
+    SET client_id = 1
+    WHERE client_id = old.client_id;
+
+END#
+
+delimiter ;
+
+-- -----------------------------------------------------
+-- views
+-- -----------------------------------------------------
+
+CREATE VIEW available_books
+AS SELECT * from books WHERE book_id not in (SELECT book_id FROM borrowings WHERE to_date is NULL);
+
+CREATE VIEW unavailable_books
+AS SELECT * from books WHERE book_id in (SELECT book_id FROM borrowings WHERE to_date is NULL);
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

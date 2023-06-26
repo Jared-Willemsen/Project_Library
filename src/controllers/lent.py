@@ -17,9 +17,9 @@ class LentController:
     def _bind(self):
         # Add keyboard/button controls for entries
         self.frame.search_bar.entry.bind(
-            '<Return>', lambda e: self.find(self.frame.search_bar.get_search_input()))
+            '<Return>', lambda e: self.change_lent_table(self.frame.search_bar.get_search_input()))
         self.frame.search_bar.button.configure(
-            command=lambda: self.find(self.frame.search_bar.get_search_input()))
+            command=lambda: self.change_lent_table(self.frame.search_bar.get_search_input()))
 
         self.frame.add_button.configure(command=self.show_add_conformation)
         self.frame.conformation_frame.cancel_button.configure(command=self.cancel_form)
@@ -44,6 +44,15 @@ class LentController:
             self.view.show_messagebox(self.frame, title='Required fields', message='Please select a book and client',
                                       icon='warning')
             return
+
+        unavailable_books = self.model.book_model.get_unavailable_books() 
+        book_id = book['values'][4] 
+        print(unavailable_books, book_id)
+        for book in unavailable_books:
+            if book_id in book:
+                self.view.show_messagebox(self.frame, title='Required fields', message='Please select an available book',
+                                          icon='warning')
+                return
 
         # switch widgets
         self.frame.hide_widgets()
@@ -81,14 +90,14 @@ class LentController:
         book_id = self.view.frames['books'].table.get_selection()['values'][4]
         client_id = self.view.frames['clients'].table.get_selection()['values'][3]
         self.model.lent_model.add_lending(book_id, client_id)
-        self.find(self.frame.search_bar.get_search_input())
+        self.change_lent_table(self.frame.search_bar.get_search_input())
         self.cancel_form()
 
     def add_return_date(self):
         #
         self.cancel_form()
 
-    def find(self, search_input):
+    def change_lent_table(self, search_input):
         self.frame.table.clear_rows()
         search_column = self.frame.search_bar.get_selected_column()
         if search_column == 'Book':

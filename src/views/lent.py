@@ -12,6 +12,7 @@ class LentView(ctk.CTkFrame):
     def __init__(self, master) -> None:
         super().__init__(master, fg_color='transparent')
         self.grid_columnconfigure(0, weight=1)
+        view_names = ['returned books', 'borrowed books', 'overdue books']
         column_names = ['Book', 'Client', 'From', 'To']
 
         # load images
@@ -24,7 +25,7 @@ class LentView(ctk.CTkFrame):
 
         self.header = ctk.CTkLabel(self, text='Lent books',
                                    font=ctk.CTkFont(size=25, weight='bold'))
-        self.search_bar = SearchBar(self, column_names, 35, 700)
+        self.search_bar = SearchBar(self, view_names, column_names, 35, 700)
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
 
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')

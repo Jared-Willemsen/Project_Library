@@ -6,16 +6,25 @@ from src.resources.config import IMAGES_DIR
 
 
 class SearchBar(ctk.CTkFrame):
-    def __init__(self, parent, column_names: list[str], height: int, width: int):
+    def __init__(self, parent, view_names: list[str], column_names: list[str], height: int, width: int):
         super().__init__(parent, height=height, width=width, fg_color='transparent')
 
         # Load images
         self.search_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'search_light.png')), size=(24, 24))
 
+        # Prepare view names and set default
+        view_names = [h.capitalize() for h in view_names]
+        self.selected_view = ctk.StringVar()
+        self.selected_view.set(view_names[0])
+
         # Prepare column names and set default
         column_names = [h.capitalize() for h in column_names]
         self.selected_column = ctk.StringVar()
         self.selected_column.set(column_names[0])
+        
+        # Dropdown menu for selecting table view
+        self.view_dropdown = ctk.CTkOptionMenu(self, corner_radius=0, height=int(height), width=int(width*(1/6)),
+                                               font=ctk.CTkFont(size=15), variable=self.selected_view, values=view_names)
 
         # Dropdown menu for selecting search column
         self.search_dropdown = ctk.CTkOptionMenu(self, corner_radius=0, height=int(height), width=int(width*(1/6)),
@@ -31,6 +40,7 @@ class SearchBar(ctk.CTkFrame):
                                     width=int(width*(1/6)))
 
         # Pack the widgets
+        self.view_dropdown.pack(side=ctk.LEFT, anchor='w', padx=2)
         self.search_dropdown.pack(side=ctk.LEFT, anchor='w', padx=2)
         self.entry.pack(side=ctk.LEFT, anchor='w', padx=2)
         self.button.pack(side=ctk.LEFT, anchor='w', padx=2)
@@ -42,3 +52,7 @@ class SearchBar(ctk.CTkFrame):
     def get_selected_column(self):
         """Return selected search column from dropdown menu"""
         return self.selected_column.get()
+
+    def get_selected_view(self):
+        """Return selected view from dropdown menu"""
+        return self.selected_view.get()
