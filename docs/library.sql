@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `Library`.`Clients` (
   `client_id` INT AUTO_INCREMENT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `surname` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(128) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`client_id`),
   UNIQUE INDEX `client_id_UNIQUE` (`client_id` ASC) VISIBLE,
@@ -66,33 +66,6 @@ CREATE TABLE IF NOT EXISTS `Library`.`Borrowings` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `Library`.`Reservings`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Library`.`Reservings` (
-  `reserved_id` INT AUTO_INCREMENT NOT NULL,
-  `client_id` INT NOT NULL,
-  `book_id` INT NOT NULL,
-  `from_date` DATE NOT NULL,
-  `to_date` DATE NULL,
-  PRIMARY KEY (`reserved_id`),
-  UNIQUE INDEX `idClients_UNIQUE` (`client_id` ASC) VISIBLE,
-  UNIQUE INDEX `idReserved_UNIQUE` (`reserved_id` ASC) VISIBLE,
-  UNIQUE INDEX `idBooks_UNIQUE` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `books_id`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `Library`.`Books` (`book_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `clients_id`
-    FOREIGN KEY (`client_id`)
-    REFERENCES `Library`.`Clients` (`client_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `Library`.`Employees`
 -- -----------------------------------------------------
@@ -101,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `Library`.`Employees` (
   `name` VARCHAR(45) NULL,
   `surname` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
+  `password` VARCHAR(128) NULL,
   PRIMARY KEY (`employee_id`),
   UNIQUE INDEX `idEmployees_UNIQUE` (`employee_id` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -125,6 +98,21 @@ CREATE TABLE IF NOT EXISTS `Library`.`Jobs` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Library`.`Password_reset_tokens`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Library`.`Password_reset_tokens` (
+  `employee_id` INT NOT NULL,
+  `token` VARCHAR(128) NOT NULL UNIQUE,
+  `token_expiry` BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`employee_id`, `token`),
+  FOREIGN KEY (`employee_id`) REFERENCES `Library`.`Employees` (`employee_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Insert Data for books
@@ -263,18 +251,6 @@ VALUES
 
 
 -- -----------------------------------------------------
--- Insert Data for reservings
--- -----------------------------------------------------
--- INSERT INTO Reservings(client_id, book_id, from_date, to_date)
--- VALUES
---     (2, 2, '2023-06-01', '2023-06-08'),
---     (3, 4, '2023-05-15', '2023-05-22'),
---     (4, 3, '2023-07-01', '2023-07-08'),
---     (5, 6, '2023-08-01', '2023-08-08'),
---     (6, 7, '2023-09-01', '2023-09-08');
-
-
--- -----------------------------------------------------
 -- Insert Data for employees
 -- -----------------------------------------------------
 INSERT INTO Employees(name, surname, email, password)
@@ -290,7 +266,8 @@ VALUES
     ('Ava', 'Wilson', 'avawilson@example.com', 'password678'),
     ('Michael', 'Anderson', 'michaelanderson@example.com', 'password901'),
     ('Sophia', 'Thompson', 'sophiathompson@example.com', 'password234'),
-    ('quick', 'login', 'a', 'b');
+    ('quick', 'login', 'a', 'b'),
+    ('Andrii', 'Sukhov', 'andrey.m.suhov@gmail.com', '12345678');
 
 -- -----------------------------------------------------
 -- Insert Data for jobs
