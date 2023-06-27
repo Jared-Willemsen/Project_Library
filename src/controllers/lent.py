@@ -10,13 +10,13 @@ class LentController:
         self.frame.table.insert_rows(
             self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.from_date, '
                                               'c.to_date, c.due_date, c.extention, c.borrowed_id FROM books a, clients b, borrowings c WHERE '
-                                              'a.book_id=c.book_id and b.client_id=c.client_id'))
+                                              'a.book_id=c.book_id and b.client_id=c.client_id ORDER BY c.from_date'))
 
         self._bind()
 
     def _bind(self):
         # Add keyboard/button controls for entries
-        self.frame.search_bar.entry.bind('<Return>',self.update_lent_table)
+        self.frame.search_bar.entry.bind('<Return>', lambda e: self.update_lent_table())
         self.frame.search_bar.button.configure(command=self.update_lent_table)
         self.frame.search_bar.view_dropdown.configure(command= lambda e: self.update_lent_table())
 

@@ -11,7 +11,7 @@ class ClientsController:
 
     def _bind(self):
         # Add keyboard/button controls for entries
-        self.frame.search_bar.entry.bind('<Return>', self.update_client_table)
+        self.frame.search_bar.entry.bind('<Return>', lambda e: self.update_client_table())
         self.frame.search_bar.button.configure(command=self.update_client_table)
         self.frame.search_bar.view_dropdown.configure(command= lambda _: self.update_client_table())
 

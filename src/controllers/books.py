@@ -10,9 +10,9 @@ class BooksController:
 
     def _bind(self):
         # Add keyboard/button controls for entries
-        self.frame.search_bar.entry.bind('<Return>',self.update_book_table)
+        self.frame.search_bar.entry.bind('<Return>', lambda e: self.update_book_table())
         self.frame.search_bar.button.configure(command=self.update_book_table)
-        self.frame.search_bar.view_dropdown.configure(command= lambda _: self.update_book_table())
+        self.frame.search_bar.view_dropdown.configure(command=lambda _: self.update_book_table())
 
         self.frame.add_button.configure(command=self.show_add_form)
         self.frame.edit_button.configure(command=self.show_edit_form)
