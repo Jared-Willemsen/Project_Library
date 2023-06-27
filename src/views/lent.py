@@ -12,21 +12,22 @@ class LentView(ctk.CTkFrame):
     def __init__(self, master) -> None:
         super().__init__(master, fg_color='transparent')
         self.grid_columnconfigure(0, weight=1)
-        view_names = ['returned books', 'borrowed books', 'overdue books']
-        column_names = ['Book', 'Client', 'From', 'To']
+        view_names = ['All borrowings', 'returned books', 'borrowed books', 'overdue books']
+        column_names = ['Book', 'Client', 'From', 'to', 'due']
 
         # load images
         self.add_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'add_light.png')),
                                       size=(24, 24))
-        self.edit_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'extend_light.png')),
+        self.time_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'extend_light.png')),
                                        size=(24, 24))
         self.remove_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'return_light.png')),
                                          size=(24, 24))
 
         self.header = ctk.CTkLabel(self, text='Lent books',
                                    font=ctk.CTkFont(size=25, weight='bold'))
-        self.search_bar = SearchBar(self, view_names, column_names, 35, 700)
-        self.table = CustomTable(self, column_names, [600, 600, 600, 600])
+        self.search_bar = SearchBar(self, view_names, 0, column_names, 35, 700)
+        self.table = CustomTable(self, column_names, [600, 600, 400, 400, 400])
+        self.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to', 'due'])
 
         self.control_buttons = ctk.CTkFrame(self, fg_color='transparent')
         self.add_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Borrow book',
@@ -35,7 +36,7 @@ class LentView(ctk.CTkFrame):
 
         self.extend_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Extend',
                                            text_color='#ffffff', font=ctk.CTkFont(size=15),
-                                           anchor='n', image=self.edit_image, compound=ctk.RIGHT)
+                                           anchor='n', image=self.time_image, compound=ctk.RIGHT)
 
         self.return_button = ctk.CTkButton(self.control_buttons, corner_radius=0, text='Return',
                                            text_color='#ffffff', font=ctk.CTkFont(size=15),

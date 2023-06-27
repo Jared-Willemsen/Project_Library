@@ -10,5 +10,4 @@ class SidebarController:
         self.frame.books_button.configure(command=lambda: self.view.select_frame_by_name('books'))
         self.frame.clients_button.configure(command=lambda: self.view.select_frame_by_name('clients'))
         self.frame.lent_button.configure(command=lambda: self.view.select_frame_by_name('lent'))
-        self.frame.reservation_button.configure(command=lambda: self.view.select_frame_by_name('reservation'))
         self.frame.logout_button.configure(command=lambda: self.view.select_frame_by_name('login'))

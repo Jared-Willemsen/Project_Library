@@ -9,21 +9,21 @@ class LentController:
 
         self.frame.table.insert_rows(
             self.model.database.execute_query('SELECT a.title, CONCAT(b.name, " ", b.surname), c.from_date, '
-                                              'c.to_date, c.borrowed_id FROM books a, clients b, borrowings c WHERE '
+                                              'c.to_date, c.due_date, c.extention, c.borrowed_id FROM books a, clients b, borrowings c WHERE '
                                               'a.book_id=c.book_id and b.client_id=c.client_id'))
 
         self._bind()
 
     def _bind(self):
         # Add keyboard/button controls for entries
-        self.frame.search_bar.entry.bind(
-            '<Return>', lambda e: self.change_lent_table(self.frame.search_bar.get_search_input()))
-        self.frame.search_bar.button.configure(
-            command=lambda: self.change_lent_table(self.frame.search_bar.get_search_input()))
+        self.frame.search_bar.entry.bind('<Return>',self.update_lent_table)
+        self.frame.search_bar.button.configure(command=self.update_lent_table)
+        self.frame.search_bar.view_dropdown.configure(command= lambda e: self.update_lent_table())
 
         self.frame.add_button.configure(command=self.show_add_conformation)
-        self.frame.conformation_frame.cancel_button.configure(command=self.cancel_form)
+        self.frame.extend_button.configure(command=self.show_extention_conformation)
         self.frame.return_button.configure(command=self.show_return_conformation)
+        self.frame.conformation_frame.cancel_button.configure(command=self.cancel_form)
 
     def cancel_form(self):
         self.frame.hide_form()
@@ -47,9 +47,8 @@ class LentController:
 
         unavailable_books = self.model.book_model.get_unavailable_books() 
         book_id = book['values'][4] 
-        print(unavailable_books, book_id)
-        for book in unavailable_books:
-            if book_id in book:
+        for id in unavailable_books:
+            if book_id in id:
                 self.view.show_messagebox(self.frame, title='Required fields', message='Please select an available book',
                                           icon='warning')
                 return
@@ -62,18 +61,42 @@ class LentController:
 
         self.view.sidebar.books_button.configure(state=ctk.DISABLED)
         self.view.sidebar.clients_button.configure(state=ctk.DISABLED)
+    
+    def show_extention_conformation(self):
+        # get selected borrowing
+        borrowing = self.frame.table.get_selection()['values']
+
+        #check if selection is valid
+        if borrowing[3] != 'None':
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please select a current borrowing',
+                            icon='warning')
+            return
+        if borrowing[5] != 0:
+            self.view.show_messagebox(self.frame, title='Required fields', message='This book has already been extended',
+                            icon='warning')
+            return
+        
+         # set confirm button
+        self.frame.conformation_frame.confirm_button.configure(command=self.extend_borrowing)
+
+        # switch widgets
+        self.frame.hide_widgets()
+        self.frame.show_form('Extend borrowing')
+        self.frame.conformation_frame.change_labels([borrowing[0], borrowing[1]])
+        
 
     def show_return_conformation(self):
         # get selected borrowing
         borrowing = self.frame.table.get_selection()['values']
 
+        #check if selection is valid
         if borrowing[3] != 'None':
             self.view.show_messagebox(self.frame, title='Required fields', message='Please select a current borrowing',
                                       icon='warning')
             return
 
         # set confirm button
-        self.frame.conformation_frame.confirm_button.configure(command=self.add_return_date)
+        self.frame.conformation_frame.confirm_button.configure(command=self.return_borrowing)
 
         # switch widgets
         self.frame.hide_widgets()
@@ -90,15 +113,30 @@ class LentController:
         book_id = self.view.frames['books'].table.get_selection()['values'][4]
         client_id = self.view.frames['clients'].table.get_selection()['values'][3]
         self.model.lent_model.add_lending(book_id, client_id)
-        self.change_lent_table(self.frame.search_bar.get_search_input())
+        
+        self.update_lent_table()
+        self.update_book_table()
         self.cancel_form()
 
-    def add_return_date(self):
-        #
+    def extend_borrowing(self):
+        borrowing_id = self.frame.table.get_selection()['values'][6]
+        self.model.lent_model.extend_due_date(borrowing_id)
+
+        self.update_lent_table()
         self.cancel_form()
 
-    def change_lent_table(self, search_input):
+    def return_borrowing(self):
+        borrowing_id = self.frame.table.get_selection()['values'][6]
+        self.model.lent_model.add_return_date(borrowing_id)
+
+        self.update_lent_table()
+        self.update_book_table()
+        self.cancel_form()
+
+    def update_lent_table(self):
         self.frame.table.clear_rows()
+
+        search_input = self.frame.search_bar.get_search_input()
         search_column = self.frame.search_bar.get_selected_column()
         if search_column == 'Book':
             search_column = 'a.title'
@@ -108,4 +146,24 @@ class LentController:
             search_column = 'c.from_date'
         elif search_column == 'To':
             search_column = 'c.to_date'
-        self.frame.table.insert_rows(self.model.search.search_lendings(search_column, search_input))
+        else:
+            search_column = 'c.due_date'
+        
+        view = self.frame.search_bar.get_selected_view()
+        if view == 'All borrowings':
+            self.frame.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to', 'due'])
+        elif view == 'Returned books':
+            self.frame.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to'])
+        else:            
+            self.frame.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'due'])
+        
+        self.frame.table.insert_rows(self.model.lent_model.search_lendings(view, search_column, search_input))
+    
+    def update_book_table(self):
+        self.view.frames['books'].table.clear_rows()
+
+        view = self.view.frames['books'].search_bar.get_selected_view()
+        search_input = self.view.frames['books'].search_bar.get_search_input()
+        search_column = self.view.frames['books'].search_bar.get_selected_column()
+
+        self.view.frames['books'].table.insert_rows(self.model.book_model.search_books(view, search_column, search_input))

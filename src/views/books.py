@@ -28,7 +28,7 @@ class BooksView(ctk.CTkFrame):
         # create widgets
         self.header = ctk.CTkLabel(self, text='Manage books',
                                    font=ctk.CTkFont(size=25, weight='bold'))
-        self.search_bar = SearchBar(self, view_names, column_names, 35, 700)
+        self.search_bar = SearchBar(self, view_names, 1, column_names, 35, 700)
         self.table = CustomTable(self, column_names, [600, 600, 600, 600])
         self.data_form = DataForm(self, column_names, [''] * len(column_names))
         self.conformation_frame = ComfirmationFrame(self, column_names)

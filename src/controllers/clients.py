@@ -11,17 +11,24 @@ class ClientsController:
 
     def _bind(self):
         # Add keyboard/button controls for entries
-        self.frame.search_bar.entry.bind(
-            '<Return>', lambda e: self.update_client_table(self.frame.search_bar.get_search_input()))
-        self.frame.search_bar.button.configure(
-            command=lambda: self.update_client_table(self.frame.search_bar.get_search_input()))
+        self.frame.search_bar.entry.bind('<Return>', self.update_client_table)
+        self.frame.search_bar.button.configure(command=self.update_client_table)
+        self.frame.search_bar.view_dropdown.configure(command= lambda _: self.update_client_table())
 
         self.frame.add_button.configure(command=self.show_add_form)
         self.frame.edit_button.configure(command=self.show_edit_form)
+        self.frame.delete_button.configure(command=self.show_conformation_frame)
+        self.frame.conformation_frame.confirm_button.configure(command=self.delete_client)
         self.frame.data_form.cancel_button.configure(command=self.cancel_form)
+        self.frame.conformation_frame.cancel_button.configure(command=self.cancel_frame)
+
 
     def cancel_form(self):
         self.frame.hide_form()
+        self.frame.show_widgets()
+
+    def cancel_frame(self):
+        self.frame.hide_frame()
         self.frame.show_widgets()
 
     def show_add_form(self):
@@ -44,6 +51,16 @@ class ClientsController:
         self.frame.data_form.confirm_button.configure(command=self.edit_client)
         self.frame.hide_widgets()
         self.frame.show_form('Edit client')
+    
+    def show_conformation_frame(self):
+        self.frame.hide_widgets()
+        self.frame.show_frame('Confirm Deletion')
+        
+        client = self.frame.table.get_selection()
+        client_id = client['values'][3]
+
+        self.frame.conformation_frame.change_labels(client['values'][0:3])
+        self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_client(client_id))
 
     '''
     ===========================
@@ -59,7 +76,7 @@ class ClientsController:
         self.model.client_model.add_client(client_data)
 
         # update the table and return to it
-        self.update_client_table(self.frame.search_bar.get_search_input())
+        self.update_client_table()
         self.cancel_form()
 
     def edit_client(self):
@@ -71,11 +88,50 @@ class ClientsController:
         self.model.client_model.edit_client(client_data, client_id)
 
         # update tables and return close form
-        self.update_client_table(self.frame.search_bar.get_search_input())
-        self.update_client_table(self.view.frames['lent'].search_bar.get_search_input())
+        self.update_client_table()
+        self.update_lent_table()
         self.cancel_form()
 
-    def update_client_table(self, search_input):
+    def delete_client(self, client_id):
+        #delete client from database
+        self.model.client_model.delete_client(client_id)
+        
+        # update tables and close frame
+        self.update_client_table()
+        self.update_lent_table()
+        self.cancel_frame()
+
+    def update_client_table(self):
         self.frame.table.clear_rows()
+        
         search_column = self.frame.search_bar.get_selected_column()
-        self.frame.table.insert_rows(self.model.client_model.search_clients(search_column, search_input))
+        search_input = self.frame.search_bar.get_search_input()
+        view = self.frame.search_bar.get_selected_view()
+
+        self.frame.table.insert_rows(self.model.client_model.search_clients(view, search_column, search_input))
+    
+    def update_lent_table(self):
+        self.view.frames['lent'].table.clear_rows()
+
+        search_input = self.view.frames['lent'].search_bar.get_search_input()
+        search_column = self.view.frames['lent'].search_bar.get_selected_column()
+        if search_column == 'Book':
+            search_column = 'a.title'
+        elif search_column == 'Client':
+            search_column = 'CONCAT(b.name, " ", b.surname)'
+        elif search_column == 'From':
+            search_column = 'c.from_date'
+        elif search_column == 'To':
+            search_column = 'c.to_date'
+        else:
+            search_column = 'c.due_date'
+        
+        view = self.view.frames['lent'].search_bar.get_selected_view()
+        if view == 'All borrowings':
+            self.view.frames['lent'].table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to', 'due'])
+        elif view == 'Returned books':
+            self.view.frames['lent'].table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to'])
+        else:            
+            self.view.frames['lent'].table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'due'])
+
+        self.view.frames['lent'].table.insert_rows(self.model.lent_model.search_lendings(view, search_column, search_input))

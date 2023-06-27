@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `Library`.`Borrowings` (
   `from_date` DATE NOT NULL,
   `to_date` DATE NULL,
   `due_date` DATE NULL,
-  `extention` BINARY,
+  `extention` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`borrowed_id`),
   UNIQUE INDEX `idLent_books_UNIQUE` (`borrowed_id` ASC) VISIBLE,
   CONSTRAINT `book_id`
@@ -129,11 +129,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Insert Data for books
 -- -----------------------------------------------------
-INSERT INTO Books(book_id, title, author, genre, language)
-VALUES (1, 'N/A', 'N/A', 'N/A', 'N/A');
-
 INSERT INTO Books(title, author, genre, language)
 VALUES
+    ('N/A', 'N/A', 'N/A', 'N/A'),
     ('The Great Adventure', 'John Smith', 'Adventure', 'English'),
     ('Mystery Mansion', 'Emily Johnson', 'Mystery', 'English'),
     ('Fantasy Quest', 'David Brown', 'Fantasy', 'English'),
@@ -242,11 +240,10 @@ VALUES
 -- -----------------------------------------------------
 -- Insert Data for clients
 -- -----------------------------------------------------
-INSERT INTO Clients(client_id, name, surname, email, password)
-VALUES (1, 'N/A', 'N/A', 'N/A', 'N/A');
 
 INSERT INTO Clients(name, surname, email, password)
 VALUES
+    ('N/A', '', 'N/A', 'N/A'),
     ('John', 'Doe', 'johndoe@example.com', 'password1'),
     ('Jane', 'Smith', 'janesmith@example.com', 'password2'),
     ('Bob', 'Johnson', 'bobjohnson@example.com', 'password3'),
@@ -256,13 +253,13 @@ VALUES
 -- -----------------------------------------------------
 -- Insert Data for borrowings
 -- -----------------------------------------------------
-INSERT INTO Borrowings(book_id, client_id, from_date, to_date)
+INSERT INTO Borrowings(book_id, client_id, from_date, to_date, due_date)
 VALUES
-    (2, 6, '2022-01-01', '2022-01-15'),
-    (3, 5, '2022-01-02', '2022-01-16'),
-    (4, 4, '2022-01-03', '2022-01-17'),
-    (5, 3, '2022-01-04', '2022-01-18'),
-    (6, 2, '2022-01-05', '2022-01-19');
+    (2, 6, '2022-01-01', '2022-01-15', '2022-01-08'),
+    (3, 5, '2022-01-02', '2022-01-16', '2022-01-09'),
+    (4, 4, '2022-01-03', '2022-01-17', '2022-01-10'),
+    (5, 3, '2022-01-04', '2022-01-18', '2022-01-11'),
+    (6, 2, '2022-01-05', NULL, '2022-01-12');
 
 
 -- -----------------------------------------------------
@@ -343,6 +340,23 @@ AS SELECT * from books WHERE book_id not in (SELECT book_id FROM borrowings WHER
 
 CREATE VIEW unavailable_books
 AS SELECT * from books WHERE book_id in (SELECT book_id FROM borrowings WHERE to_date is NULL);
+
+CREATE VIEW borrowing_clients
+AS SELECT * from clients WHERE client_id in (SELECT client_id FROM borrowings WHERE to_date is NULL);
+
+CREATE VIEW non_borrowing_clients
+AS SELECT * from clients WHERE client_id not in (SELECT client_id FROM borrowings WHERE to_date is NULL);
+
+CREATE VIEW returned_books
+AS SELECT * from borrowings WHERE to_date is not NULL;
+
+CREATE VIEW borrowed_books
+AS SELECT * from borrowings WHERE to_date is NULL;
+
+CREATE VIEW overdue_books
+AS SELECT * from borrowed_books WHERE due_date < curdate();
+
+
 
 
 

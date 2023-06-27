@@ -23,8 +23,6 @@ class SidebarView(ctk.CTkFrame):
                                          size=(25, 25))
         self.lent_image = ctk.CTkImage(light_image=Image.open(os.path.join(IMAGES_DIR, 'lent_dark.png')),
                                        size=(25, 25))
-        self.reservation_image = ctk.CTkImage(
-            light_image=Image.open(os.path.join(IMAGES_DIR, 'reservation_dark.png')), size=(20, 20))
 
         self._create_widgets()
 
@@ -34,31 +32,29 @@ class SidebarView(ctk.CTkFrame):
                                   compound='left', font=ctk.CTkFont(size=15, weight='bold'))
         self.label.pack(side=ctk.TOP, padx=20, pady=20)
 
-        self.overview_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
+        self.overview_button = ctk.CTkButton(self, corner_radius=0, height=65, border_spacing=10,
                                              text='Overview', fg_color='transparent', text_color=('gray10', 'gray90'),
-                                             hover_color=('gray70', 'gray30'), image=self.overview_image, anchor='w')
+                                             hover_color=('gray70', 'gray30'), image=self.overview_image, anchor='w', 
+                                             font=ctk.CTkFont(size=14))
         self.overview_button.pack(side=ctk.TOP, fill=ctk.X)
 
-        self.books_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
+        self.books_button = ctk.CTkButton(self, corner_radius=0, height=65, border_spacing=10,
                                           text='Books', fg_color='transparent', text_color=('gray10', 'gray90'),
-                                          hover_color=('gray70', 'gray30'), image=self.books_image, anchor='w', state=ctk.NORMAL)
+                                          hover_color=('gray70', 'gray30'), image=self.books_image, anchor='w', state=ctk.NORMAL, 
+                                          font=ctk.CTkFont(size=14))
         self.books_button.pack(side=ctk.TOP, fill=ctk.X)
 
-        self.clients_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
+        self.clients_button = ctk.CTkButton(self, corner_radius=0, height=65, border_spacing=10,
                                             text='Clients', fg_color='transparent', text_color=('gray10', 'gray90'),
-                                            hover_color=('gray70', 'gray30'), image=self.clients_image, anchor='w', state=ctk.NORMAL)
+                                            hover_color=('gray70', 'gray30'), image=self.clients_image, anchor='w', state=ctk.NORMAL, 
+                                            font=ctk.CTkFont(size=14))
         self.clients_button.pack(side=ctk.TOP, fill=ctk.X)
 
-        self.lent_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
+        self.lent_button = ctk.CTkButton(self, corner_radius=0, height=65, border_spacing=10,
                                          text='Lent', fg_color='transparent', text_color=('gray10', 'gray90'),
-                                         hover_color=('gray70', 'gray30'), image=self.lent_image, anchor='w')
+                                         hover_color=('gray70', 'gray30'), image=self.lent_image, anchor='w', 
+                                         font=ctk.CTkFont(size=14))
         self.lent_button.pack(side=ctk.TOP, fill=ctk.X)
-
-        self.reservation_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
-                                                text='Reservation', fg_color='transparent',
-                                                text_color=('gray10', 'gray90'), hover_color=('gray70', 'gray30'),
-                                                image=self.reservation_image, anchor='w')
-        self.reservation_button.pack(side=ctk.TOP, fill=ctk.X)
 
         self.logout_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
                                            text='Logout', font=ctk.CTkFont(size=15, weight='bold'),
@@ -79,5 +75,3 @@ class SidebarView(ctk.CTkFrame):
         self.clients_button.configure(
             fg_color=('gray75', 'gray25') if name == 'clients' else 'transparent')
         self.lent_button.configure(fg_color=('gray75', 'gray25') if name == 'lent' else 'transparent')
-        self.reservation_button.configure(
-            fg_color=('gray75', 'gray25') if name == 'reservation' else 'transparent')

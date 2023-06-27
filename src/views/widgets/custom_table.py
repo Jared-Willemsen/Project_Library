@@ -19,10 +19,10 @@ class CustomTable(ctk.CTkFrame):
             width = column_widths[i] if column_widths else None
             if i == 0:
                 self.treeview.heading(heading, text=heading.title(), anchor='w', command=lambda _col=heading: self.treeview_sort_column(_col, False))
-                self.treeview.column(heading, minwidth=width, width=width, anchor='w')
+                self.treeview.column(heading, minwidth=width, width=width, anchor='w', stretch='YES')
             else:
                 self.treeview.heading(heading, text=heading.title(), anchor='center', command=lambda _col=heading: self.treeview_sort_column(_col, False))
-                self.treeview.column(heading, minwidth=width, width=width, anchor='center')
+                self.treeview.column(heading, minwidth=width, width=width, anchor='center', stretch='YES')
 
         # Configure grid weights
         self.grid_rowconfigure(0, weight=1)
@@ -48,7 +48,7 @@ class CustomTable(ctk.CTkFrame):
 
     def insert_rows(self, rows):
         for row in rows:
-            self.insert("", "end", values=row)
+            self.insert("", 0, values=row)
 
     def clear_rows(self):
         for row in self.treeview.get_children():

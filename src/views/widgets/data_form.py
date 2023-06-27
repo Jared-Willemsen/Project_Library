@@ -44,4 +44,6 @@ class DataForm(ctk.CTkFrame):
         data_input = []
         for entry in self.entries:
             data_input.append(entry.get())
+            if entry.get() == "":
+                return 'empty entry'
         return data_input
