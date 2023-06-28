@@ -135,7 +135,7 @@ class ClientsController:
         view = self.view.frames['lent'].search_bar.get_selected_view()
         if view == 'All borrowings':
             self.view.frames['lent'].table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to', 'due'])
-        elif view == 'Returned books':
+        elif view == 'Past borrowings':
             self.view.frames['lent'].table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to'])
         else:            
             self.view.frames['lent'].table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'due'])

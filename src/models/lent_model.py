@@ -5,7 +5,7 @@ class LentModel:
     def search_lendings(self, view, column, search_input):
         if view == 'All borrowings':
             view = 'borrowings'
-        elif view == 'Returned books':
+        elif view == 'Past borrowings':
             view='returned_books' 
         elif view == 'Borrowed books':
             view='borrowed_books'

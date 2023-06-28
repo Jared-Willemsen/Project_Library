@@ -55,7 +55,7 @@ class LentController:
 
         # switch widgets
         self.frame.hide_widgets()
-        self.frame.show_form('Add borrowing')
+        self.frame.show_form('confirm borrowing')
         self.frame.conformation_frame.change_labels(
             [book['values'][0], f'{client["values"][0]} {client["values"][1]}'])
 
@@ -81,7 +81,7 @@ class LentController:
 
         # switch widgets
         self.frame.hide_widgets()
-        self.frame.show_form('Extend borrowing')
+        self.frame.show_form('Confirm extention')
         self.frame.conformation_frame.change_labels([borrowing[0], borrowing[1]])
         
 
@@ -100,7 +100,7 @@ class LentController:
 
         # switch widgets
         self.frame.hide_widgets()
-        self.frame.show_form('Return borrowing')
+        self.frame.show_form('Confirm returnal')
         self.frame.conformation_frame.change_labels([borrowing[0], borrowing[1]])
 
     '''
@@ -152,7 +152,7 @@ class LentController:
         view = self.frame.search_bar.get_selected_view()
         if view == 'All borrowings':
             self.frame.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to', 'due'])
-        elif view == 'Returned books':
+        elif view == 'Past borrowings':
             self.frame.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'to'])
         else:            
             self.frame.table.treeview.configure(displaycolumns=['Book', 'Client', 'From', 'due'])

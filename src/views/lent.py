@@ -12,7 +12,7 @@ class LentView(ctk.CTkFrame):
     def __init__(self, master) -> None:
         super().__init__(master, fg_color='transparent')
         self.grid_columnconfigure(0, weight=1)
-        view_names = ['All borrowings', 'returned books', 'borrowed books', 'overdue books']
+        view_names = ['all borrowings', 'past borrowings', 'borrowed books', 'overdue books']
         column_names = ['Book', 'Client', 'From', 'to', 'due']
 
         # load images
