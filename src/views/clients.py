@@ -29,7 +29,7 @@ class ClientsView(ctk.CTkFrame):
         self.header = ctk.CTkLabel(self, text='Manage clients',
                                    font=ctk.CTkFont(size=25, weight='bold'))
         self.search_bar = SearchBar(self, view_names, 0, column_names, 35, 700)
-        self.table = CustomTable(self, column_names, [600, 600, 600, 600])
+        self.table = CustomTable(self, column_names, [700, 700, 1000])
         self.data_form = DataForm(self, column_names, ['']*len(column_names))
         self.conformation_frame = ComfirmationFrame(self, column_names)
 

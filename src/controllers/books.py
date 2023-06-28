@@ -30,6 +30,7 @@ class BooksController:
         self.frame.show_widgets()
 
     def show_add_form(self):
+        self.frame.data_form.entry_values = ['','','']
         self.frame.hide_widgets()
         self.frame.show_form('Add book')
         self.frame.data_form.confirm_button.configure(command=self.add_book)
@@ -37,7 +38,7 @@ class BooksController:
     def show_edit_form(self):
         # get selection
         book = self.frame.table.get_selection()
-        book_id = book['values'][4]
+        self.frame.data_form.entry_values = book['values'][0:4]
 
         # check selection
         if book == 'no selection':
@@ -49,18 +50,19 @@ class BooksController:
         self.frame.hide_widgets()
         self.frame.show_form('Edit book')
         self.frame.data_form.fill_entries(book['values'][0:4])
-        self.frame.data_form.confirm_button.configure(command=lambda: self.edit_book(book_id))
+        self.frame.data_form.confirm_button.configure(command=lambda: self.edit_book())
     
     def show_conformation_frame(self):
-        self.frame.hide_widgets()
-        self.frame.show_frame('Confirm Deletion')
-        
         book = self.frame.table.get_selection()
-        
-        book_id = book['values'][4]
+        if book == 'no selection':
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please select a book to remove',
+                                      icon='warning')
+            return
 
+        self.frame.hide_widgets()
+        self.frame.show_frame('Confirm Removal')
         self.frame.conformation_frame.change_labels(book['values'][0:4])
-        self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_book(book_id))
+        self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_book())
     
     '''
     ===========================
@@ -84,9 +86,10 @@ class BooksController:
         self.update_book_table()
         self.cancel_form()
 
-    def edit_book(self, book_id):
+    def edit_book(self):
         # gets imputted data from the user and the id from the book that is to be edited
         book_data = self.frame.data_form.get_data_from_entries()
+        book_id = self.frame.table.get_selection()['values'][4]
 
         # edits book in the database
         self.model.book_model.edit_book(book_data, book_id)
@@ -96,7 +99,9 @@ class BooksController:
         self.update_lent_table()
         self.cancel_form()
     
-    def delete_book(self, book_id):
+    def delete_book(self):
+        book_id = self.frame.table.get_selection()['values'][4]
+
         #delete book from database
         self.model.book_model.delete_book(book_id)
         

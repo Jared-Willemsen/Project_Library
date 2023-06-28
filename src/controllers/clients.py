@@ -22,7 +22,6 @@ class ClientsController:
         self.frame.data_form.cancel_button.configure(command=self.cancel_form)
         self.frame.conformation_frame.cancel_button.configure(command=self.cancel_frame)
 
-
     def cancel_form(self):
         self.frame.hide_form()
         self.frame.show_widgets()
@@ -32,6 +31,7 @@ class ClientsController:
         self.frame.show_widgets()
 
     def show_add_form(self):
+        self.frame.data_form.entry_values = ['','','']
         self.frame.hide_widgets()
         self.frame.show_form('Add client')
         self.frame.data_form.confirm_button.configure(command=self.add_client)
@@ -39,6 +39,7 @@ class ClientsController:
     def show_edit_form(self):
         # get selection
         client = self.frame.table.get_selection()
+        self.frame.data_form.entry_values = client['values'][0:3]
 
         # check selection
         if client == 'no selection':
@@ -53,14 +54,17 @@ class ClientsController:
         self.frame.show_form('Edit client')
     
     def show_conformation_frame(self):
-        self.frame.hide_widgets()
-        self.frame.show_frame('Confirm Deletion')
-        
         client = self.frame.table.get_selection()
-        client_id = client['values'][3]
-
+        # check selection
+        if client == 'no selection':
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please select a client to remove',
+                                      icon='warning')
+            return
+        
+        self.frame.hide_widgets()
+        self.frame.show_frame('Confirm Removal')
         self.frame.conformation_frame.change_labels(client['values'][0:3])
-        self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_client(client_id))
+        self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_client())
 
     '''
     ===========================
@@ -92,7 +96,9 @@ class ClientsController:
         self.update_lent_table()
         self.cancel_form()
 
-    def delete_client(self, client_id):
+    def delete_client(self):
+        client_id = self.frame.table.get_selection()['values'][3]
+
         #delete client from database
         self.model.client_model.delete_client(client_id)
         
