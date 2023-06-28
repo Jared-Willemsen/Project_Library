@@ -23,8 +23,8 @@ class SidebarView(ctk.CTkFrame):
                                          size=(25, 25))
         self.lent_image = ctk.CTkImage(light_image=Image.open(os.path.join(IMAGES_DIR, 'lent_dark.png')),
                                        size=(25, 25))
-        self.calendar_image = ctk.CTkImage(light_image=Image.open(os.path.join(IMAGES_DIR, 'calendar_dark.png')),
-                                         size=(24, 24))
+        self.calendar_image = ctk.CTkImage(light_image=Image.open(os.path.join(IMAGES_DIR, 'calendar.png')),
+                                         size=(25, 25))
 
         self._create_widgets()
 
