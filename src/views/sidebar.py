@@ -23,6 +23,8 @@ class SidebarView(ctk.CTkFrame):
                                          size=(25, 25))
         self.lent_image = ctk.CTkImage(light_image=Image.open(os.path.join(IMAGES_DIR, 'lent_dark.png')),
                                        size=(25, 25))
+        self.calendar_image = ctk.CTkImage(light_image=Image.open(os.path.join(IMAGES_DIR, 'calendar_dark.png')),
+                                         size=(24, 24))
 
         self._create_widgets()
 
@@ -56,6 +58,12 @@ class SidebarView(ctk.CTkFrame):
                                          font=ctk.CTkFont(size=14))
         self.lent_button.pack(side=ctk.TOP, fill=ctk.X)
 
+        self.calendar_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
+                                                text='Calendar', fg_color='transparent',
+                                                text_color=('gray10', 'gray90'), hover_color=('gray70', 'gray30'),
+                                                image=self.calendar_image, anchor='w')
+        self.calendar_button.pack(side=ctk.TOP, fill=ctk.X)
+
         self.logout_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
                                            text='Logout', font=ctk.CTkFont(size=15, weight='bold'),
                                            image=self.logout_image, anchor='w')
@@ -67,6 +75,20 @@ class SidebarView(ctk.CTkFrame):
         else:
             self.grid_remove()
 
+    def toggle_singlevisible(self, visible: bool):
+        if visible:
+            self.calendar_button.pack_forget()
+            self.lent_button.pack_forget()
+            self.clients_button.pack_forget()
+            self.overview_button.pack_forget()
+            self.books_button.pack_forget()
+        else:
+            self.calendar_button.pack_forget()
+            self.lent_button.pack_forget()
+            self.clients_button.pack_forget()
+            self.overview_button.pack_forget()
+            self.books_button.pack_forget()
+
     def highlight_sidebar_selection(self, name):
         # show sidebar selected item
         self.overview_button.configure(
@@ -75,3 +97,5 @@ class SidebarView(ctk.CTkFrame):
         self.clients_button.configure(
             fg_color=('gray75', 'gray25') if name == 'clients' else 'transparent')
         self.lent_button.configure(fg_color=('gray75', 'gray25') if name == 'lent' else 'transparent')
+        self.calendar_button.configure(
+            fg_color=('gray75', 'gray25') if name == 'calendar' else 'transparent')

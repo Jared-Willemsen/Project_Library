@@ -115,6 +115,16 @@ CREATE TABLE IF NOT EXISTS `Library`.`Password_reset_tokens` (
 
 
 -- -----------------------------------------------------
+-- Table `Library`.`calendar_notes`
+-- -----------------------------------------------------
+  CREATE TABLE IF NOT EXISTS `Library`.`calendar_notes` (
+  `Notes_id` INT AUTO_INCREMENT NOT NULL,
+  `notes_desc` varchar(255) NOT NULL,
+  `Notes_date` DATE NOT NULL
+  )
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Insert Data for books
 -- -----------------------------------------------------
 INSERT INTO Books(title, author, genre, language)

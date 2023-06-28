@@ -46,7 +46,6 @@ class OverviewView(ctk.CTkFrame):
         for row in bar_data:
             self.genres.append (row[0])
             self.num_books.append (row[1])
-        print (self.num_books)
 
         bargraph_fig = Figure(figsize=(15,4), dpi=100)
         ax_genres = bargraph_fig.add_subplot(111)
@@ -54,7 +53,7 @@ class OverviewView(ctk.CTkFrame):
         ax_genres.bar (self.genres, self.num_books)
 
         f_canvas = FigureCanvasTkAgg (bargraph_fig, master=self.container)
-        f_canvas.draw ()
+        f_canvas.draw()
         f_canvas.get_tk_widget().grid(row=2,column=3, padx=20, pady=20)
 
         history_frame = ctk.CTkFrame(self)

@@ -8,6 +8,7 @@ from .overview import OverviewView
 from .books import BooksView
 from .clients import ClientsView
 from .lent import LentView
+from .calendar import CalendarView
 
 
 class View:
@@ -29,6 +30,7 @@ class View:
         self.frames['books'] = BooksView(self.root)
         self.frames['clients'] = ClientsView(self.root)
         self.frames['lent'] = LentView(self.root)
+        self.frames['calendar'] = CalendarView(self.root)
         self.sidebar = SidebarView(self.root)
 
         # grid frames
@@ -38,6 +40,7 @@ class View:
         self.frames['books'].grid(row=0, column=1, sticky='nsew')
         self.frames['clients'].grid(row=0, column=1, sticky='nsew')
         self.frames['lent'].grid(row=0, column=1, sticky='nsew')
+        self.frames['calendar'].grid(row=0, column=1, sticky='nsew')
         self.sidebar.grid(row=0, column=0, sticky='nsew')
 
         # select default frame
@@ -59,6 +62,23 @@ class View:
             self.sidebar.toggle_visibility(visible=False)
         else:
             self.sidebar.toggle_visibility(visible=True)
+            self.sidebar.highlight_sidebar_selection(name)
+    
+    def hidden_frame_by_name(self, name: str):
+        if name not in self.frames:
+            return
+        
+        if name == self.current_frame:
+            self.hide_frames()
+        
+        self.hide_frames()
+        self.frames[name].grid()
+        self.current_frame = name
+
+        if name in ('login','forgot_password'):
+            self.sidebar.toggle_singlevisible(visible=False)
+        else:
+            self.sidebar.toggle_singlevisible(visible=True)
             self.sidebar.highlight_sidebar_selection(name)
 
     @staticmethod

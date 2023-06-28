@@ -76,6 +76,25 @@ class Database:
             #self.release_connection(connection)
             logging.info("Connection pool released successfully.")
 
+    def access_query(self, query: str, values: str):
+
+        connection =self.get_connection()
+        try:
+            cursor = connection.cursor()
+            cursor.execute(query,values)
+            row = cursor.fetchall()
+            if not row:
+                return
+            result = row[0]
+            logging.info("ACCESS SUCCESSFULLY GIVEN.")
+            return result
+        except mysql.connector.Error as err:
+            logging.error(f"Error accessing query: {err}")
+            raise
+        finally:
+            self.release_connection(connection)
+            logging.info("connection pool released successfully.")
+
     def start_transaction(self):
         """Start a new transaction"""
         connection = self.get_connection()
