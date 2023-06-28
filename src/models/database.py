@@ -75,6 +75,23 @@ class Database:
             #self.release_connection(connection)
             logging.info("Connection pool released successfully.")
 
+    def execute_query_fetchone(self, query: str, values: str | tuple[str, ...] = None):
+        """Execute raw SQL query within a session"""
+        connection = self.get_connection()
+        try:
+            cursor = connection.cursor()
+            cursor.execute(query, values)
+            result = cursor.fetchone()
+            logging.info("Query executed successfully.")
+            return result
+        except mysql.connector.Error as err:
+            logging.error(f"Error executing query: {err}")
+            raise
+        finally:
+            self.commit(connection)
+            # self.release_connection(connection)
+            logging.info("Connection pool released successfully.")
+
     def access_query(self, query: str, values: str):
 
         connection =self.get_connection()
