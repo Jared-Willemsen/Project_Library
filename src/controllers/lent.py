@@ -55,7 +55,7 @@ class LentController:
 
         # switch widgets
         self.frame.hide_widgets()
-        self.frame.show_form('confirm borrowing')
+        self.frame.show_form('Confirm borrowing')
         self.frame.conformation_frame.change_labels(
             [book['values'][0], f'{client["values"][0]} {client["values"][1]}'])
 
