@@ -60,7 +60,7 @@ class BooksController:
             return
 
         self.frame.hide_widgets()
-        self.frame.show_frame('Confirm Removal')
+        self.frame.show_frame('Confirm removal')
         self.frame.conformation_frame.change_labels(book['values'][0:4])
         self.frame.conformation_frame.confirm_button.configure(command=lambda: self.delete_book())
     

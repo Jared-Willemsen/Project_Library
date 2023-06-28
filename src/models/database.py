@@ -62,7 +62,6 @@ class Database:
         """Execute raw SQL query within a session"""
         connection = self.get_connection()
         try:
-            print(query)
             cursor = connection.cursor()
             cursor.execute(query, values)
             result = cursor.fetchall()

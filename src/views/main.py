@@ -69,9 +69,10 @@ class View:
             return
         
         if name == self.current_frame:
+            return
             self.hide_frames()
         
-        self.hide_frames()
+        #self.hide_frames()
         self.frames[name].grid()
         self.current_frame = name
 
@@ -79,6 +80,9 @@ class View:
             self.sidebar.toggle_singlevisible(visible=False)
         else:
             self.sidebar.toggle_singlevisible(visible=True)
+            self.frames['books'].add_button.pack_forget()
+            self.frames['books'].edit_button.pack_forget()
+            self.frames['books'].delete_button.pack_forget()
             self.sidebar.highlight_sidebar_selection(name)
 
     @staticmethod
@@ -86,6 +90,7 @@ class View:
         CTkMessagebox(*args, cancel_button='cross', **kwargs)
 
     def hide_frames(self):
+        print(self.frames.values())
         for frame in self.frames.values():
             frame.grid_remove()
 

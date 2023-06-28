@@ -72,30 +72,33 @@ class SidebarView(ctk.CTkFrame):
     def toggle_visibility(self, visible: bool):
         if visible:
             self.grid()
+            self.books_button.pack_forget()
+            self.calendar_button.pack_forget()
+            self.lent_button.pack_forget()
+            self.clients_button.pack_forget()
+            self.overview_button.pack_forget()
+            self.overview_button.pack(side=ctk.TOP, fill=ctk.X)
+            self.books_button.pack(side=ctk.TOP, fill=ctk.X)
+            self.clients_button.pack(side=ctk.TOP, fill=ctk.X)
+            self.lent_button.pack(side=ctk.TOP, fill=ctk.X)
+            self.calendar_button.pack(side=ctk.TOP, fill=ctk.X)
         else:
             self.grid_remove()
 
     def toggle_singlevisible(self, visible: bool):
         if visible:
+            self.grid()
             self.calendar_button.pack_forget()
             self.lent_button.pack_forget()
             self.clients_button.pack_forget()
             self.overview_button.pack_forget()
-            self.books_button.pack_forget()
         else:
-            self.calendar_button.pack_forget()
-            self.lent_button.pack_forget()
-            self.clients_button.pack_forget()
-            self.overview_button.pack_forget()
-            self.books_button.pack_forget()
+            self.grid_remove()
 
     def highlight_sidebar_selection(self, name):
         # show sidebar selected item
-        self.overview_button.configure(
-            fg_color=('gray75', 'gray25') if name == 'overview' else 'transparent')
+        self.overview_button.configure(fg_color=('gray75', 'gray25') if name == 'overview' else 'transparent')
         self.books_button.configure(fg_color=('gray75', 'gray25') if name == 'books' else 'transparent')
-        self.clients_button.configure(
-            fg_color=('gray75', 'gray25') if name == 'clients' else 'transparent')
+        self.clients_button.configure(fg_color=('gray75', 'gray25') if name == 'clients' else 'transparent')
         self.lent_button.configure(fg_color=('gray75', 'gray25') if name == 'lent' else 'transparent')
-        self.calendar_button.configure(
-            fg_color=('gray75', 'gray25') if name == 'calendar' else 'transparent')
+        self.calendar_button.configure(fg_color=('gray75', 'gray25') if name == 'calendar' else 'transparent')
