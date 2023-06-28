@@ -11,12 +11,11 @@ class LoginView(ctk.CTkFrame):
         super().__init__(master, corner_radius=5, fg_color='transparent')
 
         # load images
-        self.logo_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'icon_wobg.png')),
-                                       size=(480, 180))
+        self.logo_image = ctk.CTkImage(Image.open(os.path.join(IMAGES_DIR, 'libraryicon.png')),
+                                       size=(400, 117))
 
         # populate frame
-        self.logo_label = ctk.CTkLabel(self, text='', text_color='gray25',
-                                       font=ctk.CTkFont(size=35, weight='bold'), image=self.logo_image, compound=ctk.LEFT)
+        self.logo_label = ctk.CTkLabel(self, text='', image=self.logo_image)
         self.logo_label.grid(row=0, column=1, padx=20, pady=25)
 
         self.container = ctk.CTkFrame(self, fg_color=('gray85', 'gray10'))
