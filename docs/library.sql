@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `Library`.`Clients` (
   `client_id` INT AUTO_INCREMENT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `surname` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(128) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`client_id`),
   UNIQUE INDEX `client_id_UNIQUE` (`client_id` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `Library`.`Borrowings` (
   `from_date` DATE NOT NULL,
   `to_date` DATE NULL,
   `due_date` DATE NULL,
-  `extention` tinyint(1) NOT NULL DEFAULT 0,
+  `extention` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`borrowed_id`),
   UNIQUE INDEX `idLent_books_UNIQUE` (`borrowed_id` ASC) VISIBLE,
   CONSTRAINT `book_id`
@@ -242,22 +242,53 @@ VALUES
 INSERT INTO Clients(name, surname, email, password)
 VALUES
     ('N/A', '', 'N/A', 'N/A'),
-    ('John', 'Doe', 'johndoe@example.com', 'password1'),
-    ('Jane', 'Smith', 'janesmith@example.com', 'password2'),
-    ('Bob', 'Johnson', 'bobjohnson@example.com', 'password3'),
-    ('Alice', 'Williams', 'alicewilliams@example.com', 'password4'),
-    ('David', 'Brown', 'davidbrown@example.com', 'password5');
+    ('John', 'Doe', 'johndoe@example.com', '$2b$12$qSmGuXeUttNu5DNW9GeReeKsJCZTzOyXMM/o7i1IlEzHesxPxeNZG'),
+    ('Jane', 'Smith', 'janesmith@example.com', '$2b$12$w2YDleHnws.8yM20seXTvePkuoVFcJQlPBrSn88WKkjG5s.WLjn4K'),
+    ('Bob', 'Johnson', 'bobjohnson@example.com', '$2b$12$rVLaQTU.bnRgH6eS7JHGV.7RQHNwR2qfNIO4i.D1D2NC2Yfij3O1S'),
+    ('Alice', 'Williams', 'alicewilliams@example.com', '$2b$12$9XIr2Eu1wW927NKaH50b3.e/OfOWEMKnotnkdyM7434Giit84H51O'),
+    ('David', 'Brown', 'davidbrown@example.com', '$2b$12$LW7fTr.X1Dfy/QKC.geZt.1BUOICNwRSkQUgSK6WPFe40BJyTtv1a');
 
 -- -----------------------------------------------------
 -- Insert Data for borrowings
 -- -----------------------------------------------------
 INSERT INTO Borrowings(book_id, client_id, from_date, to_date, due_date)
 VALUES
-    (2, 6, '2022-01-01', '2022-01-15', '2022-01-08'),
-    (3, 5, '2022-01-02', '2022-01-16', '2022-01-09'),
-    (4, 4, '2022-01-03', '2022-01-17', '2022-01-10'),
-    (5, 3, '2022-01-04', '2022-01-18', '2022-01-11'),
-    (6, 2, '2022-01-05', NULL, '2022-01-12');
+     (2, 6, '2022-01-01', '2022-01-15', '2022-01-08'),
+    (31, 5, '2022-01-02', '2022-01-16', '2022-01-09'),
+    (52, 4, '2022-01-03', '2022-01-17', '2022-01-10'),
+    (100, 3, '2022-01-04', '2022-01-18', '2022-01-11'),
+    (40, 6, '2022-02-01', '2022-02-15', '2022-02-08'),
+    (18, 2, '2022-02-05', '2022-02-12', '2022-02-12'),
+    (3, 5, '2022-03-02', '2022-03-16', '2022-03-09'),
+    (43, 4, '2022-03-03', '2022-03-17', '2022-03-10'),
+    (53, 3, '2022-03-04', '2022-03-18', '2022-03-11'),
+    (61, 2, '2022-04-05', '2022-04-12', '2022-04-12'),
+    (77, 6, '2022-05-01', '2022-05-15', '2022-05-08'),
+    (31, 5, '2022-06-02', '2022-06-16', '2022-06-09'),
+    (52, 4, '2022-06-03', '2022-06-17', '2022-06-10'),
+    (100, 3, '2022-07-04', '2022-07-18', '2022-07-11'),
+    (45, 6, '2022-08-01', '2022-08-15', '2022-08-08'),
+    (16, 2, '2022-08-05', '2022-08-12', '2022-08-12'),
+    (3, 5, '2022-08-02', '2022-08-16', '2022-08-09'),
+    (43, 4, '2022-09-03', '2022-09-17', '2022-09-10'),
+    (89, 3, '2022-09-04', '2022-09-18', '2022-09-11'),
+    (44, 3, '2022-10-04', '2022-10-18', '2022-10-11'),
+    (61, 2, '2022-11-05', '2022-11-12', '2022-11-12'),
+    (2, 6, '2022-11-01', '2022-11-15', '2022-11-08'),
+    (31, 5, '2022-12-02', '2022-12-16', '2022-12-09'),
+    (52, 4, '2022-12-03', '2022-12-17', '2022-12-10'),
+    (99, 3, '2023-01-04', '2023-01-18', '2023-01-11'),
+    (40, 6, '2023-02-01', '2023-02-15', '2023-02-08'),
+    (66, 2, '2023-03-05', '2023-03-12', '2023-03-12'),
+    (3, 5, '2023-04-02', '2023-04-16', '2023-04-09'),
+    (52, 4, '2023-05-03', '2023-05-17', '2023-05-10'),
+    (98, 3, '2023-05-04', '2023-05-18', '2023-05-11'),
+    (40, 6, '2023-05-01', '2023-05-15', '2023-05-08'),
+    (16, 2, '2023-05-05', '2023-05-12', '2023-05-12'),
+    (7, 5, '2023-06-02', '2023-06-16', '2023-06-09'),
+    (43, 4, '2023-06-03', '2023-06-17', '2023-06-10'),
+    (4, 3, '2023-06-02', Null, '2023-06-09'),
+    (20, 5, '2023-06-03', '2023-06-17', '2023-06-10');
 
 
 -- -----------------------------------------------------
@@ -265,19 +296,19 @@ VALUES
 -- -----------------------------------------------------
 INSERT INTO Employees(name, surname, email, password)
 VALUES
-    ('Keith', 'Maxwell', 'keithmaxwell@example.com', '1234'),
-    ('John', 'Doe', 'johndoe@example.com', 'password123'),
-    ('Jane', 'Smith', 'janesmith@example.com', 'password456'),
-    ('David', 'Johnson', 'davidjohnson@example.com', 'password789'),
-    ('Emily', 'Taylor', 'emilytaylor@example.com', 'password1234'),
-    ('William', 'Brown', 'williambrown@example.com', 'password567'),
-    ('Olivia', 'Miller', 'oliviamiller@example.com', 'password890'),
-    ('James', 'Davis', 'jamesdavis@example.com', 'password12345'),
-    ('Ava', 'Wilson', 'avawilson@example.com', 'password678'),
-    ('Michael', 'Anderson', 'michaelanderson@example.com', 'password901'),
-    ('Sophia', 'Thompson', 'sophiathompson@example.com', 'password234'),
-    ('quick', 'login', 'a', 'b'),
-    ('Andrii', 'Sukhov', 'andrey.m.suhov@gmail.com', '12345678');
+    ('Keith', 'Maxwell', 'keithmaxwell@example.com', '$2b$12$g6jMYu7YN6KWf9LXbFu2debD60Zy4jkg8h0ZE0y.EnyNd2RuMTaJW'),
+    ('John', 'Doe', 'johndoe@example.com', '$2b$12$azgjeFhB1bRUxGw8tEZKuecWdHn.zvCgSf.nsuS2.hNLu2aahlmle'),
+    ('Jane', 'Smith', 'janesmith@example.com', '$2b$12$jrFH7utZ3rmLSPsQfZtfiOxA8pLhMVO2jEzFLTbBWh.RyenNRUnE.'),
+    ('David', 'Johnson', 'davidjohnson@example.com', '$2b$12$Kbh3V7TDLSkCG2/HPIDuJ.QHEMUEOgVil5CFSWGlD3JDNo7dnk2tS'),
+    ('Emily', 'Taylor', 'emilytaylor@example.com', '$2b$12$yOIoAlEts2P2rLJ0uJpzSeQ.Eg8wmbKn2K8.aroOKCZGaxug5fE42'),
+    ('William', 'Brown', 'williambrown@example.com', '$2b$12$liw/eMzBs.eUN.mEHLKnqOYHp7olwOmhCHgfuGVGZ1oK8y0e2azr.'),
+    ('Olivia', 'Miller', 'oliviamiller@example.com', '$2b$12$S/gMIY8bAkOKx8V3MPKqDO.ZrihqDaUyxcSRggaizVUYYUlI2nG6y'),
+    ('James', 'Davis', 'jamesdavis@example.com', '$2b$12$UeknEExRxpwLSxLId4tJZOiM/AM5.Wtl0s/ZJB7ix0eNMKuAIEAES'),
+    ('Ava', 'Wilson', 'avawilson@example.com', '$2b$12$gbQ3gTopXXLloosped4pBOM21CsiqQKlvHtJhzxpQ5wDm4MtJC6ky'),
+    ('Michael', 'Anderson', 'michaelanderson@example.com', '$2b$12$LRewq7opm1LthH3u8rWoHugmd3nqXdAzIld4GKgmV/phTvZ3NGsgO'),
+    ('Sophia', 'Thompson', 'sophiathompson@example.com', '$2b$12$LRewq7opm1LthH3u8rWoHugmd3nqXdAzIld4GKgmV/phTvZ3NGsgO'),
+    ('quick', 'login', 'a', '$2b$12$Xd1PqGpiFdoab3RgISsOEefNg5yKpyBtKaa1RuchADVkUeJim6ODC'),
+    ('Andrii', 'Sukhov', 'andrey.m.suhov@gmail.com', '$2b$12$xGiSBOoEmqAKQhFoYca/hOAKd/I1x7nWMXp13y6oEQkPJKkh2gsDK');
 
 -- -----------------------------------------------------
 -- Insert Data for jobs
