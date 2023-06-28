@@ -58,7 +58,7 @@ class SidebarView(ctk.CTkFrame):
                                          font=ctk.CTkFont(size=14))
         self.lent_button.pack(side=ctk.TOP, fill=ctk.X)
 
-        self.calendar_button = ctk.CTkButton(self, corner_radius=0, height=40, border_spacing=10,
+        self.calendar_button = ctk.CTkButton(self, corner_radius=0, height=65, border_spacing=10,
                                                 text='Calendar', fg_color='transparent',
                                                 text_color=('gray10', 'gray90'), hover_color=('gray70', 'gray30'),
                                                 image=self.calendar_image, anchor='w')
