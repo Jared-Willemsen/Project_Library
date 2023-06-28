@@ -49,7 +49,6 @@ class LoginController:
                     
                 self.view.select_frame_by_name('overview')
             else:
-                
                 if self.model.auth.levelOfAccessClient(email, password):
                     self.view.hidden_frame_by_name('books')
                 else:

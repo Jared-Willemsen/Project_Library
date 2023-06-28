@@ -92,6 +92,7 @@ class SidebarView(ctk.CTkFrame):
             self.lent_button.pack_forget()
             self.clients_button.pack_forget()
             self.overview_button.pack_forget()
+            self.grid()
         else:
             self.grid_remove()
 
