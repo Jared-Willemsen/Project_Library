@@ -1,5 +1,3 @@
-import sys
-
 class LoginController:
     def __init__(self, model, view):
         self.model = model
@@ -9,7 +7,7 @@ class LoginController:
 
     def _bind(self):
         # Add keyboard controls for entries
-        self.frame.email_entry.bind('<Return>', lambda e: self.frame.password_entry.focus()) 
+        self.frame.email_entry.bind('<Return>', lambda e: self.frame.password_entry.focus())
         self.frame.password_entry.bind('<Return>', lambda e: self.login())
 
         self.frame.login_button.configure(command=self.login)
@@ -21,36 +19,38 @@ class LoginController:
         email = self.frame.email_entry.get()
         password = self.frame.password_entry.get()
         self.frame.clear_form()
-        access = [None,'Manager','Librarian','Clerk','Janitor','Security Guard']
+        access = [None, 'Manager', 'Librarian', 'Clerk', 'Janitor', 'Security Guard']
 
         if email == '' and password == '':
-            self.frame.show_messagebox(title='Required fields', message='Please enter email and password',
-                                       cancel_button='cross', icon='warning')
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please enter email and password',
+                                      icon='warning')
         elif email == '':
-            self.frame.show_messagebox(title='Required fields', message='Please enter email', cancel_button='cross',
-                                       icon='warning')
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please enter email', icon='warning')
         elif password == '':
-            self.frame.show_messagebox(title='Required fields', message='Please enter password', cancel_button='cross',
-                                       icon='warning')
+            self.view.show_messagebox(self.frame, title='Required fields', message='Please enter password',
+                                      icon='warning')
+        elif not self.model.auth.is_valid_email(email):
+            self.view.show_messagebox(self.frame, title='Check input', message='Invalid email format',
+                                      icon='warning')
         else:
             if self.model.auth.login(email, password):
 
-                level_of_access = self.model.auth.levelOfAccessStaff(email, password)
+                level_of_access = self.model.auth.levelOfAccessStaff(email)
 
                 if not level_of_access:
-                    self.frame.show_messagebox(title='Access denied', message='Your account is suspended. Please report to the nearest librarian', cancel_button='cross',
-                                       icon='warning')
+                    self.view.show_messagebox(self.frame, title='Access denied', message='Your account is suspended. Please report to the nearest librarian', icon='warning')
                     return
 
                 for index, access_level in enumerate(access):
                     if level_of_access == access_level:
                         print(access[index])
-                        break  
-                    
+                        break
+
                 self.view.select_frame_by_name('overview')
             else:
+
                 if self.model.auth.levelOfAccessClient(email, password):
                     self.view.hidden_frame_by_name('books')
                 else:
-                    self.frame.show_messagebox(title='Unable to login', message='Invalid email or password',
-                                            cancel_button='cross', icon='warning')
+                    self.view.show_messagebox(self.frame, title='Unable to login', message='Invalid email or password',
+                                              icon='warning')
