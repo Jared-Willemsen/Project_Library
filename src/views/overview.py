@@ -123,7 +123,7 @@ class OverviewView(ctk.CTkFrame):
         self.percentage_container = ctk.CTkFrame(self.top_container, corner_radius=20, fg_color='white')
         self.percentage_container.grid(row=0, column=2, padx=40)
 
-        percentage = round((available_books[0][0] / books_data[0][0]) * 100, 2)
+        percentage = round((available_books[0][0] / books_data[0][0]) * 100, 1)
         percentage_text = ctk.CTkLabel(self.percentage_container, text='available books', wraplength=100,
                                        fg_color='white', font=ctk.CTkFont(size=14))
         percentage_text.grid(row=0, column=0)
